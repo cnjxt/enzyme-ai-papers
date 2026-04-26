@@ -39,7 +39,7 @@ hide:
 
 
 <section class="submit-panel">
-  <form id="paper-submit-form" class="submit-form" data-issue-url="https://github.com/your-org/enzyme-ai-papers/issues/new">
+  <form id="paper-submit-form" class="submit-form" data-issue-url="https://github.com/cnjxt/enzyme-ai-papers/issues/new">
     <div>
       <div class="section-label">Submit paper</div>
       <h2>Share a paper URL</h2>
@@ -56,7 +56,7 @@ hide:
     <input id="submit-paper-code" name="code" type="url" placeholder="https://github.com/...">
     <div class="submit-actions">
       <button type="submit">Open GitHub Submission</button>
-      <a href="https://github.com/your-org/enzyme-ai-papers/issues/new">Open blank issue</a>
+      <a href="https://github.com/cnjxt/enzyme-ai-papers/issues/new">Open blank issue</a>
     </div>
     <p id="submit-form-status" class="form-status" aria-live="polite"></p>
   </form>

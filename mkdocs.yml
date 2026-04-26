@@ -1,8 +1,8 @@
 site_name: Enzyme AI Papers
 site_description: Curated weekly enzyme AI and computational enzyme papers.
-site_url: http://127.0.0.1:8010/
-repo_url: https://github.com/your-org/enzyme-ai-papers
-repo_name: your-org/enzyme-ai-papers
+site_url: https://cnjxt.github.io/enzyme-ai-papers/
+repo_url: https://github.com/cnjxt/enzyme-ai-papers
+repo_name: cnjxt/enzyme-ai-papers
 use_directory_urls: true
 
 theme:
