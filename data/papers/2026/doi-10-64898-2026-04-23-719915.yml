@@ -1,0 +1,40 @@
+id: doi-10-64898-2026-04-23-719915
+title: Additive baselines furnish no evidence for epistasis learning by MULTI-evolve
+authors:
+- Visani, G. M.
+- Verma, A.
+- DeWitt, W. S.
+year: 2026
+date: '2026-04-24'
+accepted_at: '2026-04-26T14:11:59+00:00'
+source: biorxiv
+doi: 10.64898/2026.04.23.719915
+url: https://www.biorxiv.org/content/10.64898/2026.04.23.719915v1
+pdf: https://www.biorxiv.org/content/10.64898/2026.04.23.719915v1.full.pdf
+code: ''
+project: ''
+preprint_url: https://www.biorxiv.org/content/10.64898/2026.04.23.719915v1
+published_url: ''
+topics:
+- benchmark-dataset
+methods:
+- protein-language-model
+evidence:
+- computational-only
+applications:
+- general
+one_liner: 'Directly published paper for enzyme AI curation: Additive baselines furnish
+  no evidence for epistasis learning by MULTI-evolve.'
+why_it_matters: Directly published by cnjxt from the project owner URL workflow.
+curator: cnjxt
+featured: false
+issue: ''
+submitted_by: cnjxt
+reviewed_by: cnjxt
+notes: Published directly from URL by cnjxt.
+curation:
+  status: accepted
+  issue: ''
+  submitted_by: cnjxt
+  reviewed_by: cnjxt
+  featured: false
