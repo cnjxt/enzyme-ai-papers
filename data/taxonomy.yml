@@ -1,0 +1,130 @@
+topics:
+  enzyme-design:
+    label: Enzyme design
+    description: De novo or guided design of enzyme sequence, structure, or function.
+    aliases: ["enzyme engineering", "enzyme generation"]
+  enzyme-redesign:
+    label: Enzyme redesign
+    description: Redesign or optimization of existing enzymes.
+    aliases: ["enzyme optimization"]
+  function-prediction:
+    label: Function prediction
+    description: Prediction or annotation of enzyme function.
+    aliases: ["enzyme annotation"]
+  substrate-specificity:
+    label: Substrate specificity
+    description: Prediction, redesign, or analysis of enzyme substrate scope.
+    aliases: ["substrate scope"]
+  catalytic-site:
+    label: Catalytic site
+    description: Identification, modeling, or engineering of catalytic residues and active sites.
+    aliases: ["active site"]
+  stability-expression:
+    label: Stability and expression
+    description: Optimization of enzyme stability, solubility, activity, or expression.
+    aliases: ["stability", "expression"]
+  directed-evolution:
+    label: Directed evolution
+    description: Directed evolution workflows supported by computation or AI.
+    aliases: ["laboratory evolution"]
+  biocatalysis:
+    label: Biocatalysis
+    description: Enzyme use in synthesis or applied catalysis.
+    aliases: ["biotransformation"]
+  benchmark-dataset:
+    label: Benchmark or dataset
+    description: Datasets, benchmarks, or evaluation resources for enzyme research.
+    aliases: ["dataset", "benchmark"]
+  review-perspective:
+    label: Review or perspective
+    description: Review, perspective, or roadmap papers relevant to enzyme AI.
+    aliases: ["review"]
+
+methods:
+  protein-language-model:
+    label: Protein language model
+    description: Protein sequence language models or sequence foundation models.
+    aliases: ["PLM", "protein LM"]
+  diffusion-generative-model:
+    label: Diffusion or generative model
+    description: Diffusion, flow, or other generative models for protein or enzyme design.
+    aliases: ["diffusion", "generative model"]
+  structure-based-design:
+    label: Structure-based design
+    description: Methods using enzyme structure, binding pockets, or structural constraints.
+    aliases: ["structure guided design"]
+  gnn:
+    label: Graph neural network
+    description: Graph-based models for molecules, proteins, or enzyme systems.
+    aliases: ["graph model"]
+  active-learning:
+    label: Active learning
+    description: Iterative selection of variants, experiments, or simulations.
+    aliases: ["sequential design"]
+  bayesian-optimization:
+    label: Bayesian optimization
+    description: Bayesian or surrogate-model optimization of enzyme properties.
+    aliases: ["BO"]
+  docking:
+    label: Docking
+    description: Ligand, substrate, or transition-state docking for enzyme analysis.
+    aliases: ["molecular docking"]
+  molecular-dynamics:
+    label: Molecular dynamics
+    description: Molecular dynamics simulations for enzyme mechanisms or dynamics.
+    aliases: ["MD"]
+  qm-mm:
+    label: QM/MM
+    description: Quantum mechanics or hybrid quantum/classical enzyme modeling.
+    aliases: ["quantum chemistry"]
+  rosetta-classical:
+    label: Rosetta or classical design
+    description: Rosetta, physics-based, or classical computational enzyme design.
+    aliases: ["Rosetta"]
+  hybrid-computational:
+    label: Hybrid computational workflow
+    description: Hybrid AI, simulation, search, and experimental design workflows.
+    aliases: ["hybrid method"]
+
+evidence:
+  computational-only:
+    label: Computational only
+    description: Computational analysis without experimental or benchmark validation.
+  benchmark-only:
+    label: Benchmark only
+    description: Validated on benchmark datasets or retrospective evaluation.
+  retrospective-validation:
+    label: Retrospective validation
+    description: Evaluated against prior experimental data or historical variants.
+  wet-lab-validation:
+    label: Wet-lab validation
+    description: Includes prospective experimental validation.
+  industrial-application:
+    label: Industrial application
+    description: Demonstrates or reports industrially relevant use.
+
+applications:
+  pharma-synthesis:
+    label: Pharma synthesis
+    description: Enzymes for pharmaceutical or fine chemical synthesis.
+  plastic-degradation:
+    label: Plastic degradation
+    description: Enzymes for polymer degradation or recycling.
+  metabolic-engineering:
+    label: Metabolic engineering
+    description: Enzymes used in pathways, strain engineering, or biosynthesis.
+  environment:
+    label: Environment
+    description: Environmental remediation or sustainability applications.
+  food-agriculture:
+    label: Food and agriculture
+    description: Food, feed, agriculture, or crop-related enzyme applications.
+  diagnostics:
+    label: Diagnostics
+    description: Enzymes used in sensing, diagnostics, or assays.
+  materials:
+    label: Materials
+    description: Enzyme applications in materials or polymer systems.
+  general:
+    label: General
+    description: General enzyme relevance without a specific application domain.

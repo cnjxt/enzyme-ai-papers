@@ -1,0 +1,38 @@
+id: 2026-firstauthor-short-keyword
+title: "Paper title"
+authors:
+  - "First Author"
+  - "Second Author"
+year: 2026
+date: "2026-01-01"
+accepted_at: "2026-01-02T12:00:00Z"
+source: "journal or preprint server"
+doi: ""
+url: "https://example.org/paper"
+pdf: ""
+code: ""
+project: ""
+preprint_url: ""
+published_url: ""
+topics:
+  - enzyme-design
+methods:
+  - hybrid-computational
+evidence:
+  - computational-only
+applications:
+  - general
+one_liner: "One concise sentence describing the main contribution."
+why_it_matters: "Original curator note explaining why this paper matters for enzyme AI."
+curator: "github-username"
+featured: false
+issue: 1
+submitted_by: "github-username"
+reviewed_by: "maintainer"
+notes: ""
+curation:
+  status: "accepted"
+  issue: 1
+  submitted_by: "github-username"
+  reviewed_by: "maintainer"
+  featured: false

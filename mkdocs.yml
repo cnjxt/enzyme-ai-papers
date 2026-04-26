@@ -1,0 +1,47 @@
+site_name: Enzyme AI Papers
+site_description: Curated weekly enzyme AI and computational enzyme papers.
+site_url: http://127.0.0.1:8010/
+repo_url: https://github.com/your-org/enzyme-ai-papers
+repo_name: your-org/enzyme-ai-papers
+use_directory_urls: true
+
+theme:
+  name: material
+  features:
+    - navigation.top
+    - search.highlight
+    - search.suggest
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+plugins:
+  - search
+
+extra_css:
+  - assets/site.css
+
+extra_javascript:
+  - assets/app.js
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+
+nav:
+  - Weekly: index.md
+  - Archive: archive.md
+  - Submit: info.md

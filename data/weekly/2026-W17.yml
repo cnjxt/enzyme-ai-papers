@@ -1,0 +1,12 @@
+week: "2026-W17"
+title: "Enzyme AI Papers Weekly - 2026-W17"
+date: "2026-04-26"
+summary: "A minimal seed weekly digest used to validate the repository workflow."
+pick_of_the_week: "2026-example-enzyme-plm"
+sections:
+  enzyme-design:
+    title: "Enzyme Design"
+    papers:
+      - "2026-example-enzyme-plm"
+commentary:
+  2026-example-enzyme-plm: "A seed record that demonstrates the weekly digest format."

@@ -1,0 +1,47 @@
+name: Paper suggestion
+description: Recommend an enzyme AI or computational enzyme paper with a URL.
+title: "[Paper]: "
+labels:
+  - needs-review
+  - paper-suggestion
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Paper URL
+      description: DOI, arXiv, bioRxiv, PubMed, journal, PDF landing page, or project page.
+      placeholder: "https://..."
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: Paper title
+      description: Optional. Leave blank if the title should be detected automatically.
+      placeholder: "Optional"
+    validations:
+      required: false
+  - type: textarea
+    id: note
+    attributes:
+      label: Why this paper matters
+      description: Optional. One or two sentences are enough.
+      placeholder: "Optional note for maintainers."
+    validations:
+      required: false
+  - type: input
+    id: tags
+    attributes:
+      label: Suggested tags
+      description: Optional. Free text is fine; maintainers do not need canonical tag IDs here.
+      placeholder: "enzyme design, PLM, wet lab validation"
+    validations:
+      required: false
+  - type: input
+    id: code
+    attributes:
+      label: Code or project link
+      description: Optional GitHub, Zenodo, project page, or dataset link.
+      placeholder: "https://github.com/..."
+    validations:
+      required: false

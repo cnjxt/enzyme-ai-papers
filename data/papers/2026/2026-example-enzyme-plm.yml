@@ -1,0 +1,40 @@
+id: 2026-example-enzyme-plm
+title: "Example enzyme language model paper"
+authors:
+  - "First Author"
+  - "Second Author"
+year: 2026
+date: "2026-04-20"
+accepted_at: "2026-04-20"
+source: "example"
+doi: ""
+url: "https://example.org/example-enzyme-language-model-paper"
+pdf: ""
+code: "https://github.com/example/example-enzyme-plm"
+project: ""
+preprint_url: ""
+published_url: ""
+topics:
+  - enzyme-design
+  - function-prediction
+methods:
+  - protein-language-model
+  - active-learning
+evidence:
+  - benchmark-only
+applications:
+  - general
+one_liner: "Demonstrates a compact workflow for ranking enzyme variants with a protein language model."
+why_it_matters: "This seed entry shows the required metadata format and how concise curator notes should read. Replace it with real seed papers before launching the public repository."
+curator: "maintainer"
+featured: true
+issue: ""
+submitted_by: "maintainer"
+reviewed_by: "maintainer"
+notes: "Template seed entry for repository validation."
+curation:
+  status: "accepted"
+  issue: ""
+  submitted_by: "maintainer"
+  reviewed_by: "maintainer"
+  featured: true

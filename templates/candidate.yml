@@ -1,0 +1,27 @@
+title: "Paper title"
+authors:
+  - "First Author"
+year: 2026
+date: "2026-01-01"
+source: "journal or preprint server"
+url: "https://example.org/paper"
+doi: ""
+pdf: ""
+code: ""
+project: ""
+preprint_url: ""
+published_url: ""
+suggested_topics:
+  - enzyme-design
+suggested_methods:
+  - hybrid-computational
+suggested_evidence:
+  - computational-only
+suggested_applications:
+  - general
+one_liner: "One concise sentence describing the main contribution."
+why_relevant: "Explain why this paper should be reviewed for inclusion."
+curator: "github-username"
+status: "pending-review"
+issue: 1
+submitted_by: "github-username"

@@ -1,0 +1,93 @@
+name: Issue curation
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+      - reopened
+      - labeled
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  preview:
+    if: github.event.action == 'opened' || github.event.action == 'edited' || github.event.action == 'reopened'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Build issue preview
+        run: python scripts/preview_issue.py --event "$GITHUB_EVENT_PATH" --output /tmp/paper-preview.md --fetch-metadata
+      - name: Comment preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment "${{ github.event.issue.number }}" --body-file /tmp/paper-preview.md
+
+  accept:
+    if: github.event.action == 'labeled' && (github.event.label.name == 'accepted' || github.event.label.name == 'featured')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Accept issue into paper data
+        run: python scripts/accept_issue.py --event "$GITHUB_EVENT_PATH" --reviewer "${{ github.actor }}" --fetch-metadata > /tmp/accept-result.txt
+      - name: Generate site
+        run: python scripts/build_docs.py
+      - name: Validate metadata
+        run: python scripts/validate_papers.py
+      - name: Run tests
+        run: python -m unittest discover -s tests
+      - name: Create curation pull request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: curation/issue-${{ github.event.issue.number }}
+          delete-branch: true
+          title: "Accept paper suggestion #${{ github.event.issue.number }}"
+          commit-message: "Accept paper suggestion #${{ github.event.issue.number }}"
+          body: |
+            Automated curation update for #${{ github.event.issue.number }}.
+
+            Maintainer action: `${{ github.event.label.name }}` label.
+
+            Closes #${{ github.event.issue.number }}.
+          labels: automated-curation
+      - name: Comment pull request
+        if: steps.cpr.outputs.pull-request-url != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --body "Curation PR created: ${{ steps.cpr.outputs.pull-request-url }}"
+
+  needs-info:
+    if: github.event.action == 'labeled' && github.event.label.name == 'needs-info'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment needs-info
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --body "Thanks for the suggestion. A maintainer marked this as needing more context; please add a short note about enzyme relevance or any missing paper link/details."
+
+  reject:
+    if: github.event.action == 'labeled' && github.event.label.name == 'rejected'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment and close rejected suggestion
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --body "Thanks for the suggestion. A maintainer declined this paper for the current curated archive."
+          gh issue close "${{ github.event.issue.number }}" --reason "not planned"

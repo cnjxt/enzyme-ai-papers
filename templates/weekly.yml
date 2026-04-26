@@ -1,0 +1,13 @@
+# Optional weekly override. Normal weekly digests are generated from accepted_at.
+week: "2026-W01"
+title: "Enzyme AI Papers Weekly - 2026-W01"
+date: "2026-01-04"
+summary: "Short curator-written weekly summary."
+pick_of_the_week: "2026-firstauthor-short-keyword"
+sections:
+  enzyme-design:
+    title: "Enzyme Design"
+    papers:
+      - "2026-firstauthor-short-keyword"
+commentary:
+  2026-firstauthor-short-keyword: "Short curator note for the weekly digest."

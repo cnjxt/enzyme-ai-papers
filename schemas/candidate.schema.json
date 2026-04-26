@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.github.io/enzyme-ai-papers/schemas/candidate.schema.json",
+  "title": "Paper candidate",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "title",
+    "url",
+    "why_relevant"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "doi": {
+      "type": "string"
+    },
+    "why_relevant": {
+      "type": "string",
+      "minLength": 1
+    },
+    "suggested_topics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "suggested_methods": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "suggested_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "suggested_applications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
