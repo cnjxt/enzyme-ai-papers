@@ -268,6 +268,47 @@
   padding: 1.8rem 0;
 }
 
+.weekly-paper-section {
+  border-top: 1px solid var(--paper-line);
+  padding: 1.35rem 0 1.8rem;
+}
+
+.weekly-paper-list {
+  background: var(--paper-panel);
+  border: 1px solid var(--paper-line);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(23, 26, 24, 0.06);
+  overflow: hidden;
+}
+
+.paper-row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 1rem;
+}
+
+.paper-row + .paper-row {
+  border-top: 1px solid var(--paper-line);
+}
+
+.paper-row:hover {
+  background: #f7fbfa;
+}
+
+.paper-row-main {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.paper-row h3 {
+  color: var(--paper-ink);
+  font-size: 1.05rem;
+  line-height: 1.25;
+  margin: 0;
+}
+
 .weekly-history {
   border-top: 1px solid var(--paper-line);
   padding: 1.5rem 0;
@@ -412,6 +453,14 @@
   padding-top: 0.2rem;
 }
 
+.paper-row .paper-links {
+  align-content: start;
+  justify-content: flex-end;
+  margin-top: 0;
+  min-width: max-content;
+  padding-top: 0;
+}
+
 .paper-links a:hover {
   background: #eef6f4;
   text-decoration: none;
@@ -552,6 +601,15 @@
 
   .issue-card {
     margin-top: 0.85rem;
+  }
+
+  .paper-row {
+    grid-template-columns: 1fr;
+  }
+
+  .paper-row .paper-links {
+    justify-content: flex-start;
+    min-width: 0;
   }
 
   .submit-panel {

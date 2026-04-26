@@ -138,8 +138,6 @@ def build_home_page(latest: dict[str, Any] | None, paper_index: dict[str, Any], 
 
     content = f"""{PAGE_PREFIX}{render_page_shell("weekly", issue)}
 
-{render_toolbar(papers)}
-
 {main_content}
 """
     write_text(DOCS_DIR / "index.md", content.rstrip() + "\n")
@@ -147,7 +145,7 @@ def build_home_page(latest: dict[str, Any] | None, paper_index: dict[str, Any], 
 
 def render_weekly(weekly: dict[str, Any], paper_index: dict[str, Any]) -> str:
     commentary = weekly.get("commentary", {})
-    cards = "\n".join(render_paper_card(paper_index[paper_id], commentary.get(paper_id)) for paper_id in weekly["paper_ids"])
+    rows = "\n".join(render_weekly_paper_row(paper_index[paper_id], commentary.get(paper_id)) for paper_id in weekly["paper_ids"])
     return f"""
 <section class="weekly-overview">
   <div class="section-label">{escape(readme_week_label(weekly, 0))}</div>
@@ -156,10 +154,10 @@ def render_weekly(weekly: dict[str, Any], paper_index: dict[str, Any]) -> str:
   <p class="weekly-summary">{escape(weekly['summary'])}</p>
 </section>
 
-<section class="paper-group" id="weekly-papers">
+<section class="weekly-paper-section" id="weekly-papers">
   <div class="section-label">Papers</div>
-  <div class="paper-grid">
-{cards}
+  <div class="weekly-paper-list">
+{rows}
   </div>
 </section>
 """
@@ -461,6 +459,36 @@ def render_filter_buttons(papers: list[Any]) -> str:
         f'<button class="filter-chip" data-filter="{escape(tag)}" type="button">{escape(tag)}</button>'
         for tag in seen[:12]
     )
+
+
+def render_weekly_paper_row(record: Any, commentary: str | None = None) -> str:
+    paper = record.data
+    tags: list[str] = []
+    for group in TAG_GROUPS:
+        tags.extend(str(tag) for tag in paper.get(group, []))
+
+    authors = ", ".join(paper.get("authors", []))
+    summary = display_summary(paper)
+    note = display_note(paper, commentary)
+    tag_html = "".join(f"<span>{escape(tag)}</span>" for tag in tags)
+    link_html = html_links(paper)
+    summary_html = f'    <p class="summary">{escape(summary)}</p>\n' if summary else ""
+    note_html = f'    <p class="why">{escape(note)}</p>\n' if note else ""
+    links_html = f'  <div class="paper-links">{link_html}</div>\n' if link_html else ""
+
+    return f"""
+<article class="paper-row">
+  <div class="paper-row-main">
+    <div class="paper-meta">
+      <span>{escape(paper['source'])}</span>
+      <span>{escape(str(paper['year']))}</span>
+    </div>
+    <h3>{escape(paper['title'])}</h3>
+    <p class="authors">{escape(authors)}</p>
+{summary_html}{note_html}    <div class="tags">{tag_html}</div>
+  </div>
+{links_html}</article>
+"""
 
 
 def render_paper_card(record: Any, commentary: str | None = None) -> str:
@@ -800,6 +828,47 @@ SITE_CSS = """
   padding: 1.8rem 0;
 }
 
+.weekly-paper-section {
+  border-top: 1px solid var(--paper-line);
+  padding: 1.35rem 0 1.8rem;
+}
+
+.weekly-paper-list {
+  background: var(--paper-panel);
+  border: 1px solid var(--paper-line);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(23, 26, 24, 0.06);
+  overflow: hidden;
+}
+
+.paper-row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 1rem;
+}
+
+.paper-row + .paper-row {
+  border-top: 1px solid var(--paper-line);
+}
+
+.paper-row:hover {
+  background: #f7fbfa;
+}
+
+.paper-row-main {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.paper-row h3 {
+  color: var(--paper-ink);
+  font-size: 1.05rem;
+  line-height: 1.25;
+  margin: 0;
+}
+
 .weekly-history {
   border-top: 1px solid var(--paper-line);
   padding: 1.5rem 0;
@@ -944,6 +1013,14 @@ SITE_CSS = """
   padding-top: 0.2rem;
 }
 
+.paper-row .paper-links {
+  align-content: start;
+  justify-content: flex-end;
+  margin-top: 0;
+  min-width: max-content;
+  padding-top: 0;
+}
+
 .paper-links a:hover {
   background: #eef6f4;
   text-decoration: none;
@@ -1084,6 +1161,15 @@ SITE_CSS = """
 
   .issue-card {
     margin-top: 0.85rem;
+  }
+
+  .paper-row {
+    grid-template-columns: 1fr;
+  }
+
+  .paper-row .paper-links {
+    justify-content: flex-start;
+    min-width: 0;
   }
 
   .submit-panel {
