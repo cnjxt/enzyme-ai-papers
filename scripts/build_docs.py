@@ -12,6 +12,8 @@ from paperlib import (
     ROOT,
     TAG_GROUPS,
     compact_paper_item,
+    display_note,
+    display_summary,
     index_papers,
     iso_week,
     load_yaml,
@@ -117,7 +119,7 @@ def append_readme_week(
 
     for paper_id in weekly["paper_ids"]:
         lines.append(compact_paper_item(paper_index[paper_id]))
-    lines.append("")
+        lines.append("")
 
 
 def build_home_page(latest: dict[str, Any] | None, paper_index: dict[str, Any], papers: list[Any]) -> None:
@@ -468,10 +470,14 @@ def render_paper_card(record: Any, commentary: str | None = None) -> str:
         tags.extend(str(tag) for tag in paper.get(group, []))
 
     authors = ", ".join(paper.get("authors", []))
-    note = commentary or paper.get("why_it_matters", "")
+    summary = display_summary(paper)
+    note = display_note(paper, commentary)
     tag_html = "".join(f"<span>{escape(tag)}</span>" for tag in tags)
     link_html = html_links(paper)
-    searchable = " ".join([paper["title"], authors, paper["one_liner"], note, " ".join(tags)])
+    summary_html = f'  <p class="summary">{escape(summary)}</p>\n' if summary else ""
+    note_html = f'  <p class="why">{escape(note)}</p>\n' if note else ""
+    links_html = f'  <div class="paper-links">{link_html}</div>\n' if link_html else ""
+    searchable = " ".join(part for part in [paper["title"], authors, summary, note, " ".join(tags)] if part)
 
     return f"""
 <article class="paper-card" data-tags="{escape(' '.join(tags))}" data-search="{escape(searchable.lower())}">
@@ -481,11 +487,8 @@ def render_paper_card(record: Any, commentary: str | None = None) -> str:
   </div>
   <h3>{escape(paper['title'])}</h3>
   <p class="authors">{escape(authors)}</p>
-  <p>{escape(paper['one_liner'])}</p>
-  <p class="why">{escape(note)}</p>
-  <div class="tags">{tag_html}</div>
-  <div class="paper-links">{link_html}</div>
-</article>
+{summary_html}{note_html}  <div class="tags">{tag_html}</div>
+{links_html}</article>
 """
 
 
@@ -898,12 +901,16 @@ SITE_CSS = """
   font-size: 0.84rem;
 }
 
+.summary {
+  color: #303833;
+  font-size: 0.94rem;
+}
+
 .why {
   background: var(--paper-panel-soft);
   border-left: 3px solid var(--paper-accent);
   color: #2d3730;
   font-size: 0.86rem;
-  margin-top: auto;
   padding: 0.65rem 0.75rem;
 }
 
@@ -930,6 +937,11 @@ SITE_CSS = """
   min-height: 34px;
   padding: 0.32rem 0.55rem;
   text-decoration: none;
+}
+
+.paper-links {
+  margin-top: auto;
+  padding-top: 0.2rem;
 }
 
 .paper-links a:hover {

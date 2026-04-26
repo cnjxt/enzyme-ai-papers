@@ -133,8 +133,8 @@ def build_paper_record(
 ) -> dict[str, Any]:
     base_id = make_paper_id({**metadata, "title": title}, "", year)
     paper_id = unique_direct_paper_id(base_id)
-    one_liner = first_sentence(note) or f"Directly published paper for enzyme AI curation: {title}."
-    why_it_matters = note or f"Directly published by {reviewer} from the project owner URL workflow."
+    one_liner = first_sentence(note) or "No curator summary supplied."
+    why_it_matters = note or "No curator note supplied."
 
     return {
         "id": paper_id,

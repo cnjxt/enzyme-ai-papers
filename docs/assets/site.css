@@ -369,12 +369,16 @@
   font-size: 0.84rem;
 }
 
+.summary {
+  color: #303833;
+  font-size: 0.94rem;
+}
+
 .why {
   background: var(--paper-panel-soft);
   border-left: 3px solid var(--paper-accent);
   color: #2d3730;
   font-size: 0.86rem;
-  margin-top: auto;
   padding: 0.65rem 0.75rem;
 }
 
@@ -401,6 +405,11 @@
   min-height: 34px;
   padding: 0.32rem 0.55rem;
   text-decoration: none;
+}
+
+.paper-links {
+  margin-top: auto;
+  padding-top: 0.2rem;
 }
 
 .paper-links a:hover {

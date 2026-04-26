@@ -51,6 +51,9 @@ class ProjectWorkflowTest(unittest.TestCase):
         self.assertIn("Enzyme AI Papers Weekly", readme)
         self.assertRegex(readme, r"2026-W17.*2026\.4\.20-")
         self.assertNotIn("Pick of the Week", readme)
+        self.assertNotIn("Directly published paper for enzyme AI curation", readme)
+        self.assertNotIn("project owner URL workflow", index)
+        self.assertIn("- Links: [Paper]", readme)
         self.assertIn("MORE_INFO.md", readme)
 
     def test_fetch_candidates_is_safe_placeholder(self) -> None:

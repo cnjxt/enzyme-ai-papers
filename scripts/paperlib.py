@@ -41,6 +41,16 @@ REQUIRED_WEEKLY_FIELDS = {
 }
 
 TAG_GROUPS = ("topics", "methods", "evidence", "applications")
+PLACEHOLDER_TEXTS = {
+    "no curator summary supplied.",
+    "no curator note supplied.",
+}
+PLACEHOLDER_PREFIXES = (
+    "directly published paper for enzyme ai curation:",
+    "recommended paper for enzyme ai curation:",
+    "directly published by ",
+    "accepted from github issue #",
+)
 ID_RE = re.compile(r"^\d{4}-[a-z0-9]+(?:-[a-z0-9]+)*$")
 FLEXIBLE_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 WEEK_RE = re.compile(r"^\d{4}-W\d{2}$")
@@ -359,13 +369,39 @@ def markdown_escape(text: Any) -> str:
     return value.replace("|", "\\|")
 
 
+def display_text(value: Any) -> str:
+    if not isinstance(value, str):
+        return ""
+    text = " ".join(value.split())
+    if not text:
+        return ""
+    key = normalize_key(text)
+    if key in PLACEHOLDER_TEXTS:
+        return ""
+    if any(key.startswith(prefix) for prefix in PLACEHOLDER_PREFIXES):
+        return ""
+    return text
+
+
+def display_summary(paper: dict[str, Any]) -> str:
+    return display_text(paper.get("one_liner"))
+
+
+def display_note(paper: dict[str, Any], commentary: str | None = None) -> str:
+    note = display_text(commentary) or display_text(paper.get("why_it_matters"))
+    summary = display_summary(paper)
+    if summary and normalize_key(note) == normalize_key(summary):
+        return ""
+    return note
+
+
 def format_links(paper: dict[str, Any]) -> str:
     links: list[str] = []
     for field, label in (
-        ("url", "paper"),
-        ("pdf", "pdf"),
-        ("code", "code"),
-        ("project", "project"),
+        ("url", "Paper"),
+        ("pdf", "PDF"),
+        ("code", "Code"),
+        ("project", "Project"),
     ):
         value = paper.get(field)
         if value:
@@ -385,7 +421,8 @@ def paper_card(record: PaperRecord, commentary: str | None = None) -> str:
     authors = ", ".join(paper.get("authors", []))
     links = format_links(paper)
     tags = format_tags(paper)
-    note = commentary or str(paper.get("why_it_matters", ""))
+    summary = display_summary(paper)
+    note = display_note(paper, commentary)
     lines = [
         f"### {paper['title']}",
         "",
@@ -393,20 +430,32 @@ def paper_card(record: PaperRecord, commentary: str | None = None) -> str:
         f"**Source / Year:** {paper['source']}, {paper['year']}",
         f"**Links:** {links}",
         f"**Tags:** {tags}",
-        "",
-        f"**Why it matters:** {note}",
-        "",
     ]
+    if summary:
+        lines.extend(["", f"**Summary:** {summary}"])
+    if note:
+        lines.extend(["", f"**Note:** {note}"])
+    lines.append("")
     return "\n".join(lines)
 
 
 def compact_paper_item(record: PaperRecord) -> str:
     paper = record.data
+    authors = ", ".join(str(author) for author in paper.get("authors", []))
     links = format_links(paper)
     tags = format_tags(paper)
-    link_text = f" {links}" if links else ""
-    return (
-        f"- **{markdown_escape(paper['title'])}**\n"
-        f"  {tags}\n"
-        f"  {markdown_escape(paper['one_liner'])}{link_text}"
-    )
+    summary = display_summary(paper)
+    note = display_note(paper)
+    lines = [f"- **{markdown_escape(paper['title'])}**"]
+    if authors:
+        lines.append(f"  - Authors: {markdown_escape(authors)}")
+    lines.append(f"  - Source: {markdown_escape(paper['source'])}, {paper['year']}")
+    if summary:
+        lines.append(f"  - Summary: {markdown_escape(summary)}")
+    if note:
+        lines.append(f"  - Note: {markdown_escape(note)}")
+    if tags:
+        lines.append(f"  - Tags: {tags}")
+    if links:
+        lines.append(f"  - Links: {links}")
+    return "\n".join(lines)

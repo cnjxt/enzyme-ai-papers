@@ -10,14 +10,24 @@ URL-first, curator-reviewed, and designed for quick reading.
 ### Papers
 
 - **Additive baselines furnish no evidence for epistasis learning by MULTI-evolve**
-  `benchmark-dataset` `protein-language-model` `computational-only` `general`
-  Directly published paper for enzyme AI curation: Additive baselines furnish no evidence for epistasis learning by MULTI-evolve. [paper](https://www.biorxiv.org/content/10.64898/2026.04.23.719915v1) · [pdf](https://www.biorxiv.org/content/10.64898/2026.04.23.719915v1.full.pdf)
+  - Authors: Visani, G. M., Verma, A., DeWitt, W. S.
+  - Source: biorxiv, 2026
+  - Tags: `benchmark-dataset` `protein-language-model` `computational-only` `general`
+  - Links: [Paper](https://www.biorxiv.org/content/10.64898/2026.04.23.719915v1) · [PDF](https://www.biorxiv.org/content/10.64898/2026.04.23.719915v1.full.pdf)
+
 - **Beyond Structure and Affinity: Context-Dependent Signals for de novo Binder Success**
-  `stability-expression` `benchmark-dataset` `bayesian-optimization` `computational-only` `general`
-  Directly published paper for enzyme AI curation: Beyond Structure and Affinity: Context-Dependent Signals for de novo Binder Success. [paper](https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1) · [pdf](https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1.full.pdf)
+  - Authors: Bozkurt, C.
+  - Source: biorxiv, 2026
+  - Tags: `stability-expression` `benchmark-dataset` `bayesian-optimization` `computational-only` `general`
+  - Links: [Paper](https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1) · [PDF](https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1.full.pdf)
+
 - **Example enzyme language model paper**
-  `enzyme-design` `function-prediction` `protein-language-model` `active-learning` `benchmark-only` `general`
-  Demonstrates a compact workflow for ranking enzyme variants with a protein language model. [paper](https://example.org/example-enzyme-language-model-paper) · [code](https://github.com/example/example-enzyme-plm)
+  - Authors: First Author, Second Author
+  - Source: example, 2026
+  - Summary: Demonstrates a compact workflow for ranking enzyme variants with a protein language model.
+  - Note: This seed entry shows the required metadata format and how concise curator notes should read. Replace it with real seed papers before launching the public repository.
+  - Tags: `enzyme-design` `function-prediction` `protein-language-model` `active-learning` `benchmark-only` `general`
+  - Links: [Paper](https://example.org/example-enzyme-language-model-paper) · [Code](https://github.com/example/example-enzyme-plm)
 
 ## More Information
 
