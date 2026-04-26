@@ -168,15 +168,20 @@ Deploy from a branch -> main -> /docs
 
 ```text
 .github/workflows/deploy-pages.yml
+.github/workflows/publish-url.yml
 ```
 
-作用：每次 `main` 更新后：
+`deploy-pages.yml` 的作用：每次 `main` 更新后：
 
 1. 安装 Python 依赖
 2. 运行 `scripts/build_docs.py`
 3. 运行 `mkdocs build --strict`
 4. 上传 `site/` artifact
 5. 部署到 GitHub Pages
+
+`publish-url.yml` 的作用：仓库 owner 在 Actions 页面只输入 URL，就能直接
+生成 paper YAML、更新 docs、校验、提交到 `main`，并在同一个 workflow 里部署
+Pages。
 
 ### 11. 验证线上部署
 
@@ -205,6 +210,12 @@ https://cnjxt.github.io/enzyme-ai-papers/
 
 ```text
 论文 URL -> GitHub issue -> 自动 metadata preview -> 维护者加 label -> 自动 PR -> 审核 PR -> merge -> 网站自动更新
+```
+
+owner 快速发布流程：
+
+```text
+Actions -> Publish URL -> 输入论文 URL -> 自动生成/校验/提交 main -> 网站自动更新
 ```
 
 ### 1. 用户提交论文
@@ -323,7 +334,28 @@ PR 合并到 `main` 后：
 
 作用：绕过网站页面，但走同一套 issue automation。
 
-### 方法 C：维护者直接给 issue 加 label
+### 方法 C：owner 在 Actions 里直接发布 URL
+
+适合：项目拥有者已经确认某篇论文可以上线，不想先创建 issue 和 PR。
+
+步骤：
+
+1. 打开 `https://github.com/<owner>/enzyme-ai-papers/actions`
+2. 选择 `Publish URL`
+3. 点击 `Run workflow`
+4. 填写 `url`
+5. 可选填写 `title`、`note`、`tags`、`code`
+6. 需要作为本周精选时勾选 `featured`
+7. 运行 workflow
+8. 等 workflow 完成后打开网站确认更新
+
+作用：这是 owner-only 的快速通道。它会直接写入 `main`，并在同一个 workflow
+里完成 `build_docs`、metadata validation、tests、MkDocs build 和 Pages 部署。
+
+注意：这个 workflow 有 `github.actor == github.repository_owner` 限制。普通用户
+和非 owner 维护者不应使用这条直接发布路径。
+
+### 方法 D：维护者直接给 issue 加 label
 
 适合：已经有待审核 issue。
 
@@ -338,7 +370,7 @@ PR 合并到 `main` 后：
 
 作用：这是维护者日常收录论文的主要动作。
 
-### 方法 D：本地手动建分支提交 PR
+### 方法 E：本地手动建分支提交 PR
 
 适合：自动 metadata 不够好，或维护者想完全手动维护 YAML。
 
@@ -377,7 +409,7 @@ git push origin add-paper-short-name
 
 作用：适合更精细的人工整理；仍然保留 PR review 和 CI 流程。
 
-### 方法 E：GitHub 网页直接编辑后开 PR
+### 方法 F：GitHub 网页直接编辑后开 PR
 
 适合：小修 metadata，例如改标签、改摘要、改错别字。
 
@@ -392,7 +424,7 @@ git push origin add-paper-short-name
 注意：如果改了 `data/papers/`，最好本地或 Actions 重新生成 `README.md` 和 `docs/`。
 否则 `Validate` 里的 `git diff --exit-code` 可能失败。
 
-### 方法 F：维护者直接合并自动 curation PR
+### 方法 G：维护者直接合并自动 curation PR
 
 适合：metadata preview 和 PR diff 都已经准确。
 

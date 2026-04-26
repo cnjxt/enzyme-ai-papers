@@ -205,6 +205,20 @@ Runs on pushes to `main` and manual dispatch. It regenerates docs, builds the
 MkDocs site into `site/`, uploads the Pages artifact, and deploys it to GitHub
 Pages.
 
+### Direct URL Publish
+
+File:
+
+```text
+.github/workflows/publish-url.yml
+```
+
+Runs only by manual dispatch from the Actions tab and only when the actor is
+the repository owner. It accepts a paper URL plus optional title, note, tags,
+code link, and featured flag. It creates or updates the paper YAML directly on
+`main`, regenerates docs, runs validation/tests/MkDocs build, commits the
+changes, and deploys the built Pages artifact in the same workflow.
+
 ## 9. End-to-End Acceptance Test
 
 After deployment, test the real workflow:
@@ -234,6 +248,8 @@ Before announcing the project publicly:
 - Confirm branch protection is enabled.
 - Confirm GitHub Pages build and deployment source is GitHub Actions.
 - Confirm one real paper suggestion can complete the full issue-to-PR flow.
+- Confirm the owner-only `Publish URL` workflow can publish one trusted URL
+  when direct publication is part of the operating model.
 
 ## Operational Notes
 

@@ -43,6 +43,11 @@ Accepted papers live under `data/papers/YYYY/`. Weekly issues are generated from
 accepted paper records using `accepted_at`; `data/weekly/` is only for optional
 curator overrides such as a custom summary or commentary.
 
+Repository owners can also use the `Publish URL` GitHub Actions workflow for
+trusted direct publication from a single URL. That workflow writes to `main`
+and deploys Pages after running the same generation, validation, tests, and
+MkDocs build steps.
+
 ## Public Project Boundary
 
 - Visitors can submit suggestions, not accepted records.
