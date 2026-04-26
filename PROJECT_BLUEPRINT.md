@@ -50,7 +50,6 @@ Submit a paper URL. Maintainers review a preview and apply labels. The site is g
 Maintainers use labels:
 
 - `accepted`: include the paper.
-- `featured`: mark it as a Pick of the Week candidate.
 - `needs-info`: request more context.
 - `rejected`: decline.
 
@@ -71,13 +70,13 @@ Accepted papers live under `data/papers/YYYY/`. The stable record includes:
 - bibliographic metadata: `title`, `authors`, `year`, `date`, `source`, `doi`
 - links: `url`, `pdf`, `code`, `project`, `preprint_url`, `published_url`
 - curation metadata: `accepted_at`, `issue`, `submitted_by`, `reviewed_by`,
-  `featured`, `curation`
+  `curation`
 - taxonomy: `topics`, `methods`, `evidence`, `applications`
 - readable summaries: `one_liner`, `why_it_matters`
 
 `data/weekly/` is optional. A file there can override the generated weekly
-title, summary, pick, sections, or commentary for a specific week. It is not
-required for normal curation.
+title, summary, or commentary for a specific week. It is not required for
+normal curation.
 
 ## Website
 

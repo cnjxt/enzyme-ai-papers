@@ -23,12 +23,6 @@ on:
         description: Optional code, project, dataset, or benchmark URL
         required: false
         type: string
-      featured:
-        description: Mark as Pick of the Week candidate
-        required: true
-        default: false
-        type: boolean
-
 permissions:
   contents: write
   pages: write
@@ -61,7 +55,6 @@ jobs:
           PAPER_NOTE: ${{ inputs.note }}
           PAPER_TAGS: ${{ inputs.tags }}
           PAPER_CODE: ${{ inputs.code }}
-          PAPER_FEATURED: ${{ inputs.featured }}
           REVIEWER: ${{ github.actor }}
         run: |
           args=(--url "$PAPER_URL" --reviewer "$REVIEWER" --fetch-metadata)
@@ -69,7 +62,6 @@ jobs:
           if [ -n "$PAPER_NOTE" ]; then args+=(--note "$PAPER_NOTE"); fi
           if [ -n "$PAPER_TAGS" ]; then args+=(--tags "$PAPER_TAGS"); fi
           if [ -n "$PAPER_CODE" ]; then args+=(--code "$PAPER_CODE"); fi
-          if [ "$PAPER_FEATURED" = "true" ]; then args+=(--featured); fi
           python scripts/publish_url.py "${args[@]}" | tee publish-result.txt
       - name: Generate docs
         run: python scripts/build_docs.py

@@ -82,7 +82,6 @@ Create these labels in the repository:
 needs-review
 paper-suggestion
 accepted
-featured
 needs-info
 rejected
 automated-curation
@@ -93,7 +92,6 @@ Purpose:
 - `needs-review`: default state for new suggestions.
 - `paper-suggestion`: identifies issues created from the paper template.
 - `accepted`: maintainer decision to include the paper.
-- `featured`: marks a paper as a Pick of the Week candidate.
 - `needs-info`: asks the submitter for more context.
 - `rejected`: declines and closes the suggestion.
 - `automated-curation`: marks pull requests created by automation.
@@ -161,7 +159,7 @@ python scripts/preview_issue.py --event "$GITHUB_EVENT_PATH" --fetch-metadata
 
 It comments a metadata preview on the issue.
 
-When a maintainer applies `accepted` or `featured`, it runs:
+When a maintainer applies `accepted`, it runs:
 
 ```bash
 python scripts/accept_issue.py --event "$GITHUB_EVENT_PATH" --reviewer "$GITHUB_ACTOR" --fetch-metadata
@@ -215,8 +213,8 @@ File:
 
 Runs only by manual dispatch from the Actions tab and only when the actor is
 the repository owner. It accepts a paper URL plus optional title, note, tags,
-code link, and featured flag. It creates or updates the paper YAML directly on
-`main`, regenerates docs, runs validation/tests/MkDocs build, commits the
+and code link. It creates or updates the paper YAML directly on `main`,
+regenerates docs, runs validation/tests/MkDocs build, commits the
 changes, and deploys the built Pages artifact in the same workflow.
 
 ### Owner Paper Management

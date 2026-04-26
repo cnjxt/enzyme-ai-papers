@@ -38,8 +38,6 @@ REQUIRED_WEEKLY_FIELDS = {
     "title",
     "date",
     "summary",
-    "pick_of_the_week",
-    "sections",
 }
 
 TAG_GROUPS = ("topics", "methods", "evidence", "applications")
@@ -286,13 +284,14 @@ def validate_weekly(record: WeeklyRecord, paper_index: dict[str, PaperRecord]) -
             errors.append(f"{path}: {field} must be a non-empty string")
 
     pick = data.get("pick_of_the_week")
-    if not isinstance(pick, str) or pick not in paper_index:
+    if pick is not None and (not isinstance(pick, str) or pick not in paper_index):
         errors.append(f"{path}: pick_of_the_week must reference an accepted paper id")
 
     sections = data.get("sections")
-    if not isinstance(sections, dict) or not sections:
-        errors.append(f"{path}: sections must be a non-empty mapping")
-    else:
+    if sections is not None:
+        if not isinstance(sections, dict):
+            errors.append(f"{path}: sections must be a mapping")
+            sections = {}
         for section_id, section in sections.items():
             if not isinstance(section, dict):
                 errors.append(f"{path}: section {section_id} must be a mapping")
@@ -405,8 +404,9 @@ def compact_paper_item(record: PaperRecord) -> str:
     paper = record.data
     links = format_links(paper)
     tags = format_tags(paper)
+    link_text = f" {links}" if links else ""
     return (
-        f"- **{markdown_escape(paper['title'])}**  \n"
-        f"  {tags}  \n"
-        f"  {markdown_escape(paper['one_liner'])} {links}"
+        f"- **{markdown_escape(paper['title'])}**\n"
+        f"  {tags}\n"
+        f"  {markdown_escape(paper['one_liner'])}{link_text}"
     )

@@ -72,7 +72,7 @@ The submitted URL is not a public web URL that the automation can review. Please
 
     return f"""### Paper suggestion preview
 
-This issue can be accepted by adding the `accepted` label. Add `featured` too if it should be a Pick of the Week candidate.
+This issue can be accepted by adding the `accepted` label.
 
 - **Title:** {title}
 - **URL:** {url}

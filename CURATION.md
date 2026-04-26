@@ -59,7 +59,6 @@ Do not copy the paper abstract.
 Maintainers use GitHub labels as the normal review interface:
 
 - `accepted`: include the paper in the archive.
-- `featured`: mark it as a Pick of the Week candidate.
 - `needs-info`: ask the submitter for more context.
 - `rejected`: decline the suggestion.
 

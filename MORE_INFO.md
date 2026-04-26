@@ -35,7 +35,6 @@ does not store credentials, call the GitHub API, or write accepted paper data.
 Review the issue preview and apply labels:
 
 - `accepted`: generate a paper record and curation pull request.
-- `featured`: mark the paper as a Pick of the Week candidate.
 - `needs-info`: ask for more context.
 - `rejected`: decline the suggestion.
 
@@ -56,7 +55,7 @@ website from the corrected data.
 ## Public Project Boundary
 
 - Visitors can submit suggestions, not accepted records.
-- Maintainers control `accepted`, `featured`, `needs-info`, and `rejected`.
+- Maintainers control `accepted`, `needs-info`, and `rejected`.
 - Localhost, private IP, `.local`, and non-standard-port URLs are rejected by
   the curation scripts.
 - The curation workflow opens a pull request instead of merging directly.

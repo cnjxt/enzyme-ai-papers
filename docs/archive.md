@@ -70,26 +70,8 @@ hide:
   <section class="paper-group" id="week-2026-W17">
     <div class="section-label">2026-W17: 2026.4.20-</div>
     <h2>Enzyme AI Papers Weekly - 2026-W17</h2>
-    <p class="weekly-summary">A minimal seed weekly digest used to validate the repository workflow.</p>
-    <div class="section-label">Pick of the Week</div>
-    
-<article class="paper-card is-featured" data-tags="enzyme-design function-prediction protein-language-model active-learning benchmark-only general" data-search="example enzyme language model paper first author, second author demonstrates a compact workflow for ranking enzyme variants with a protein language model. a seed record that demonstrates the weekly digest format. enzyme-design function-prediction protein-language-model active-learning benchmark-only general">
-  <div class="paper-meta">
-    <span>example</span>
-    <span>2026</span>
-  </div>
-  <h3>Example enzyme language model paper</h3>
-  <p class="authors">First Author, Second Author</p>
-  <p>Demonstrates a compact workflow for ranking enzyme variants with a protein language model.</p>
-  <p class="why">A seed record that demonstrates the weekly digest format.</p>
-  <div class="tags"><span>enzyme-design</span><span>function-prediction</span><span>protein-language-model</span><span>active-learning</span><span>benchmark-only</span><span>general</span></div>
-  <div class="paper-links"><a href="https://example.org/example-enzyme-language-model-paper"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg><span>Paper</span></a><a href="https://github.com/example/example-enzyme-plm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.5 2.4 1.1 2.9.8.1-.7.4-1.1.7-1.4-2.2-.3-4.6-1.1-4.6-4.9 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.8 1a9.6 9.6 0 0 1 5.1 0c1.9-1.3 2.8-1 2.8-1 .6 1.4.2 2.4.1 2.7.7.7 1.1 1.6 1.1 2.7 0 3.8-2.3 4.6-4.6 4.9.4.3.8 1 .8 2v2.5c0 .3.2.6.8.5A10 10 0 0 0 12 2z"/></svg><span>Code</span></a></div>
-</article>
-
-    
-    <div class="paper-subgroup">
-      <div class="section-label">Benchmark or dataset</div>
-      <div class="paper-grid">
+    <p class="weekly-summary">3 accepted enzyme AI or computational enzyme papers collected for 2026-W17.</p>
+    <div class="paper-grid">
 <article class="paper-card" data-tags="benchmark-dataset protein-language-model computational-only general" data-search="additive baselines furnish no evidence for epistasis learning by multi-evolve visani, g. m., verma, a., dewitt, w. s. directly published paper for enzyme ai curation: additive baselines furnish no evidence for epistasis learning by multi-evolve. directly published by cnjxt from the project owner url workflow. benchmark-dataset protein-language-model computational-only general">
   <div class="paper-meta">
     <span>biorxiv</span>
@@ -102,12 +84,8 @@ hide:
   <div class="tags"><span>benchmark-dataset</span><span>protein-language-model</span><span>computational-only</span><span>general</span></div>
   <div class="paper-links"><a href="https://www.biorxiv.org/content/10.64898/2026.04.23.719915v1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg><span>Paper</span></a><a href="https://www.biorxiv.org/content/10.64898/2026.04.23.719915v1.full.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M8.5 16h7"/></svg><span>PDF</span></a></div>
 </article>
-</div>
-    </div>
 
-    <div class="paper-subgroup">
-      <div class="section-label">Stability and expression</div>
-      <div class="paper-grid">
+
 <article class="paper-card" data-tags="stability-expression benchmark-dataset bayesian-optimization computational-only general" data-search="beyond structure and affinity: context-dependent signals for de novo binder success bozkurt, c. directly published paper for enzyme ai curation: beyond structure and affinity: context-dependent signals for de novo binder success. directly published by cnjxt from the project owner url workflow. stability-expression benchmark-dataset bayesian-optimization computational-only general">
   <div class="paper-meta">
     <span>biorxiv</span>
@@ -120,9 +98,21 @@ hide:
   <div class="tags"><span>stability-expression</span><span>benchmark-dataset</span><span>bayesian-optimization</span><span>computational-only</span><span>general</span></div>
   <div class="paper-links"><a href="https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg><span>Paper</span></a><a href="https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1.full.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M8.5 16h7"/></svg><span>PDF</span></a></div>
 </article>
-</div>
-    </div>
 
+
+<article class="paper-card" data-tags="enzyme-design function-prediction protein-language-model active-learning benchmark-only general" data-search="example enzyme language model paper first author, second author demonstrates a compact workflow for ranking enzyme variants with a protein language model. this seed entry shows the required metadata format and how concise curator notes should read. replace it with real seed papers before launching the public repository. enzyme-design function-prediction protein-language-model active-learning benchmark-only general">
+  <div class="paper-meta">
+    <span>example</span>
+    <span>2026</span>
+  </div>
+  <h3>Example enzyme language model paper</h3>
+  <p class="authors">First Author, Second Author</p>
+  <p>Demonstrates a compact workflow for ranking enzyme variants with a protein language model.</p>
+  <p class="why">This seed entry shows the required metadata format and how concise curator notes should read. Replace it with real seed papers before launching the public repository.</p>
+  <div class="tags"><span>enzyme-design</span><span>function-prediction</span><span>protein-language-model</span><span>active-learning</span><span>benchmark-only</span><span>general</span></div>
+  <div class="paper-links"><a href="https://example.org/example-enzyme-language-model-paper"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg><span>Paper</span></a><a href="https://github.com/example/example-enzyme-plm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.5 2.4 1.1 2.9.8.1-.7.4-1.1.7-1.4-2.2-.3-4.6-1.1-4.6-4.9 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.8 1a9.6 9.6 0 0 1 5.1 0c1.9-1.3 2.8-1 2.8-1 .6 1.4.2 2.4.1 2.7.7.7 1.1 1.6 1.1 2.7 0 3.8-2.3 4.6-4.6 4.9.4.3.8 1 .8 2v2.5c0 .3.2.6.8.5A10 10 0 0 0 12 2z"/></svg><span>Code</span></a></div>
+</article>
+</div>
   </section>
 
 </section>
@@ -175,4 +165,3 @@ hide:
 
   </div>
 </section>
-

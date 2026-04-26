@@ -84,7 +84,7 @@ hide:
   </article>
   <article class="info-block">
     <h2>Maintainers</h2>
-    <p>Review the issue preview, add <code>accepted</code> to include it, and add <code>featured</code> for a weekly pick.</p>
+    <p>Review the issue preview, add <code>accepted</code> to include it, and adjust generated metadata before merging.</p>
   </article>
 </section>
 
@@ -92,6 +92,5 @@ hide:
   <h2>Automation</h2>
   <pre><code>Issue opened -> metadata preview
 Label accepted -> paper YAML draft + generated weekly digest
-Label featured -> Pick of the Week candidate
 Pull request -> validation + MkDocs build</code></pre>
 </section>

@@ -33,7 +33,7 @@ def main() -> int:
     parser.add_argument("--code", help="Optional code, project, dataset, or benchmark URL.")
     parser.add_argument("--accepted-at", help="ISO date or datetime. Defaults to the current UTC time.")
     parser.add_argument("--reviewer", default="owner", help="Curator username. Defaults to owner.")
-    parser.add_argument("--featured", action="store_true", help="Mark as a Pick of the Week candidate.")
+    parser.add_argument("--featured", action="store_true", help="Set the reserved featured flag.")
     parser.add_argument("--fetch-metadata", action="store_true", help="Best-effort metadata lookup via public APIs.")
     parser.add_argument("--dry-run", action="store_true", help="Print the generated YAML without writing files.")
     args = parser.parse_args()

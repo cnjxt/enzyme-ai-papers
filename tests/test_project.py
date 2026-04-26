@@ -45,11 +45,12 @@ class ProjectWorkflowTest(unittest.TestCase):
         index = (ROOT / "docs" / "index.md").read_text(encoding="utf-8")
         info = (ROOT / "docs" / "info.md").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        self.assertIn("Pick of the Week", index)
+        self.assertNotIn("Pick of the Week", index)
         self.assertIn("paper-submit-form", info)
         self.assertIn("Open GitHub Submission", info)
         self.assertIn("Enzyme AI Papers Weekly", readme)
         self.assertRegex(readme, r"2026-W17.*2026\.4\.20-")
+        self.assertNotIn("Pick of the Week", readme)
         self.assertIn("MORE_INFO.md", readme)
 
     def test_fetch_candidates_is_safe_placeholder(self) -> None:

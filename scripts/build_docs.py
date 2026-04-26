@@ -14,13 +14,11 @@ from paperlib import (
     compact_paper_item,
     index_papers,
     iso_week,
-    load_taxonomy,
     load_yaml,
     load_papers,
     load_weeklies,
     parse_record_date,
     sorted_papers,
-    taxonomy_labels,
     validate_all,
     write_text,
 )
@@ -45,7 +43,7 @@ def main() -> int:
 
     papers = sorted_papers(load_papers())
     paper_index = index_papers(papers)
-    weeklies = derive_weeklies(papers, paper_index)
+    weeklies = derive_weeklies(papers)
     latest = weeklies[0] if weeklies else None
 
     build_readme(weeklies, paper_index)
@@ -106,32 +104,20 @@ def append_readme_week(
     paper_index: dict[str, Any],
     label: str,
 ) -> None:
-    commentary = weekly.get("commentary", {})
-    pick = paper_index[weekly["pick_of_the_week"]]
-
     lines.extend(
         [
             f"## {label}: {weekly['title']} ({weekly['date_range']})",
             "",
             weekly["summary"],
             "",
-            "### Pick of the Week",
-            "",
-            compact_paper_item(pick),
-            "",
-            f"> {commentary.get(pick.paper_id, pick.data['why_it_matters'])}",
-            "",
             "### Papers",
             "",
         ]
     )
 
-    for section in weekly["sections"].values():
-        lines.append(f"#### {section['title']}")
-        lines.append("")
-        for paper_id in section["papers"]:
-            lines.append(compact_paper_item(paper_index[paper_id]))
-        lines.append("")
+    for paper_id in weekly["paper_ids"]:
+        lines.append(compact_paper_item(paper_index[paper_id]))
+    lines.append("")
 
 
 def build_home_page(latest: dict[str, Any] | None, paper_index: dict[str, Any], papers: list[Any]) -> None:
@@ -154,15 +140,13 @@ def build_home_page(latest: dict[str, Any] | None, paper_index: dict[str, Any], 
 
 {main_content}
 """
-    write_text(DOCS_DIR / "index.md", content)
+    write_text(DOCS_DIR / "index.md", content.rstrip() + "\n")
 
 
 def render_weekly(weekly: dict[str, Any], paper_index: dict[str, Any]) -> str:
     commentary = weekly.get("commentary", {})
-    pick = paper_index[weekly["pick_of_the_week"]]
-
-    chunks: list[str] = [
-        f"""
+    cards = "\n".join(render_paper_card(paper_index[paper_id], commentary.get(paper_id)) for paper_id in weekly["paper_ids"])
+    return f"""
 <section class="weekly-overview">
   <div class="section-label">{escape(readme_week_label(weekly, 0))}</div>
   <h2>{escape(weekly['title'])}</h2>
@@ -170,30 +154,13 @@ def render_weekly(weekly: dict[str, Any], paper_index: dict[str, Any]) -> str:
   <p class="weekly-summary">{escape(weekly['summary'])}</p>
 </section>
 
-<section class="pick" id="weekly-papers">
-  <div class="section-label">Pick of the Week</div>
-  {render_paper_card(pick, commentary.get(pick.paper_id), featured=True)}
+<section class="paper-group" id="weekly-papers">
+  <div class="section-label">Papers</div>
+  <div class="paper-grid">
+{cards}
+  </div>
 </section>
-
-<section class="paper-sections">
 """
-    ]
-
-    for section in weekly["sections"].values():
-        cards = "\n".join(render_paper_card(paper_index[paper_id]) for paper_id in section["papers"])
-        chunks.append(
-            f"""
-  <section class="paper-group">
-    <div class="section-label">{escape(section['title'])}</div>
-    <div class="paper-grid">
-      {cards}
-    </div>
-  </section>
-"""
-        )
-
-    chunks.append("</section>")
-    return "\n".join(chunks)
 
 
 def build_archive_page(
@@ -230,7 +197,7 @@ def build_archive_page(
 
 {''.join(groups) if groups else '<section class="empty-state"><h2>No papers yet</h2></section>'}
 """
-    write_text(DOCS_DIR / "archive.md", content)
+    write_text(DOCS_DIR / "archive.md", content.rstrip() + "\n")
 
 
 def build_info_page(issue: dict[str, Any] | None) -> None:
@@ -250,7 +217,7 @@ def build_info_page(issue: dict[str, Any] | None) -> None:
   </article>
   <article class="info-block">
     <h2>Maintainers</h2>
-    <p>Review the issue preview, add <code>accepted</code> to include it, and add <code>featured</code> for a weekly pick.</p>
+    <p>Review the issue preview, add <code>accepted</code> to include it, and adjust generated metadata before merging.</p>
   </article>
 </section>
 
@@ -258,11 +225,10 @@ def build_info_page(issue: dict[str, Any] | None) -> None:
   <h2>Automation</h2>
   <pre><code>Issue opened -> metadata preview
 Label accepted -> paper YAML draft + generated weekly digest
-Label featured -> Pick of the Week candidate
 Pull request -> validation + MkDocs build</code></pre>
 </section>
 """
-    write_text(DOCS_DIR / "info.md", content)
+    write_text(DOCS_DIR / "info.md", content.rstrip() + "\n")
 
 
 def render_submit_form(issue_url: str) -> str:
@@ -312,9 +278,7 @@ def issue_submission_url() -> str:
     return f"{repo_url}/issues/new"
 
 
-def derive_weeklies(papers: list[Any], paper_index: dict[str, Any]) -> list[dict[str, Any]]:
-    taxonomy = load_taxonomy()
-    topic_labels = taxonomy_labels(taxonomy, "topics")
+def derive_weeklies(papers: list[Any]) -> list[dict[str, Any]]:
     overrides = {record.week: record.data for record in load_weeklies()}
     by_week: dict[str, list[Any]] = defaultdict(list)
     for paper in papers:
@@ -324,17 +288,6 @@ def derive_weeklies(papers: list[Any], paper_index: dict[str, Any]) -> list[dict
     for week, records in by_week.items():
         sorted_records = sorted_papers(records)
         override = overrides.get(week, {})
-        pick = override.get("pick_of_the_week") if isinstance(override, dict) else None
-        if not pick or pick not in paper_index:
-            pick = next((record.paper_id for record in sorted_records if record.featured), sorted_records[0].paper_id)
-
-        generated_sections = auto_sections(sorted_records, topic_labels)
-        sections = override.get("sections") if isinstance(override, dict) else None
-        if sections:
-            sections = merge_sections(sections, generated_sections)
-        else:
-            sections = generated_sections
-
         commentary = override.get("commentary", {}) if isinstance(override, dict) else {}
         latest_date = max(parse_record_date(record.accepted_at) for record in sorted_records).isoformat()
         week_start, week_end = iso_week_bounds(week)
@@ -347,58 +300,12 @@ def derive_weeklies(papers: list[Any], paper_index: dict[str, Any]) -> list[dict
                 "end_date": week_end.isoformat(),
                 "date_range": format_week_range(week),
                 "summary": override.get("summary", auto_summary(week, sorted_records)) if isinstance(override, dict) else auto_summary(week, sorted_records),
-                "pick_of_the_week": pick,
-                "sections": sections,
+                "paper_ids": [record.paper_id for record in sorted_records],
                 "commentary": commentary if isinstance(commentary, dict) else {},
             }
         )
 
     return sorted(weeklies, key=lambda record: record["week"], reverse=True)
-
-
-def auto_sections(records: list[Any], topic_labels: dict[str, str]) -> dict[str, dict[str, Any]]:
-    sections: dict[str, dict[str, Any]] = {}
-    for record in records:
-        topics = record.data.get("topics", [])
-        topic = str(topics[0]) if topics else "general"
-        if topic not in sections:
-            sections[topic] = {
-                "title": topic_labels.get(topic, titleize_tag(topic)),
-                "papers": [],
-            }
-        sections[topic]["papers"].append(record.paper_id)
-    return sections
-
-
-def merge_sections(
-    override_sections: dict[str, Any],
-    generated_sections: dict[str, dict[str, Any]],
-) -> dict[str, dict[str, Any]]:
-    merged: dict[str, dict[str, Any]] = {}
-    included: set[str] = set()
-    for section_id, section in override_sections.items():
-        if not isinstance(section, dict):
-            continue
-        papers = [str(paper_id) for paper_id in section.get("papers", [])]
-        included.update(papers)
-        merged[str(section_id)] = {
-            "title": section.get("title") or generated_sections.get(section_id, {}).get("title") or titleize_tag(str(section_id)),
-            "papers": papers,
-        }
-
-    for section_id, section in generated_sections.items():
-        missing = [paper_id for paper_id in section["papers"] if paper_id not in included]
-        if not missing:
-            continue
-        if section_id in merged:
-            merged[section_id]["papers"].extend(missing)
-        else:
-            merged[section_id] = {
-                "title": section["title"],
-                "papers": missing,
-            }
-        included.update(missing)
-    return merged
 
 
 def auto_summary(week: str, records: list[Any]) -> str:
@@ -461,30 +368,14 @@ def render_weekly_archive(weeklies: list[dict[str, Any]], paper_index: dict[str,
     chunks = ['<section class="paper-sections weekly-archive">']
     for weekly in weeklies:
         commentary = weekly.get("commentary", {})
-        pick = paper_index[weekly["pick_of_the_week"]]
-        section_cards: list[str] = []
-        for section in weekly["sections"].values():
-            section_papers = [paper_id for paper_id in section["papers"] if paper_id != pick.paper_id]
-            if not section_papers:
-                continue
-            cards = "\n".join(render_paper_card(paper_index[paper_id]) for paper_id in section_papers)
-            section_cards.append(
-                f"""
-    <div class="paper-subgroup">
-      <div class="section-label">{escape(section['title'])}</div>
-      <div class="paper-grid">{cards}</div>
-    </div>
-"""
-            )
+        cards = "\n".join(render_paper_card(paper_index[paper_id], commentary.get(paper_id)) for paper_id in weekly["paper_ids"])
         chunks.append(
             f"""
   <section class="paper-group" id="week-{escape(weekly['week'])}">
     <div class="section-label">{escape(weekly['week'])}: {escape(weekly['date_range'])}</div>
     <h2>{escape(weekly['title'])}</h2>
     <p class="weekly-summary">{escape(weekly['summary'])}</p>
-    <div class="section-label">Pick of the Week</div>
-    {render_paper_card(pick, commentary.get(pick.paper_id), featured=True)}
-    {''.join(section_cards)}
+    <div class="paper-grid">{cards}</div>
   </section>
 """
         )
@@ -570,7 +461,7 @@ def render_filter_buttons(papers: list[Any]) -> str:
     )
 
 
-def render_paper_card(record: Any, commentary: str | None = None, featured: bool = False) -> str:
+def render_paper_card(record: Any, commentary: str | None = None) -> str:
     paper = record.data
     tags: list[str] = []
     for group in TAG_GROUPS:
@@ -580,11 +471,10 @@ def render_paper_card(record: Any, commentary: str | None = None, featured: bool
     note = commentary or paper.get("why_it_matters", "")
     tag_html = "".join(f"<span>{escape(tag)}</span>" for tag in tags)
     link_html = html_links(paper)
-    classes = "paper-card is-featured" if featured else "paper-card"
     searchable = " ".join([paper["title"], authors, paper["one_liner"], note, " ".join(tags)])
 
     return f"""
-<article class="{classes}" data-tags="{escape(' '.join(tags))}" data-search="{escape(searchable.lower())}">
+<article class="paper-card" data-tags="{escape(' '.join(tags))}" data-search="{escape(searchable.lower())}">
   <div class="paper-meta">
     <span>{escape(paper['source'])}</span>
     <span>{escape(str(paper['year']))}</span>
@@ -634,10 +524,6 @@ def nav_icon(key: str) -> str:
 
 def escape(value: Any) -> str:
     return html.escape(str(value), quote=True)
-
-
-def titleize_tag(tag: str) -> str:
-    return " ".join(part.capitalize() for part in tag.split("-"))
 
 
 SITE_CSS = """
@@ -976,10 +862,6 @@ SITE_CSS = """
   gap: 0.65rem;
   min-height: 100%;
   padding: 1rem;
-}
-
-.paper-card.is-featured {
-  border-color: rgba(15, 118, 110, 0.38);
 }
 
 .paper-card[hidden] {

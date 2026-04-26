@@ -79,15 +79,6 @@ on:
         description: Optional project URL update
         required: false
         type: string
-      featured:
-        description: Keep, set, or unset Pick of the Week candidate
-        required: true
-        default: keep
-        type: choice
-        options:
-          - keep
-          - "true"
-          - "false"
       clear:
         description: Optional comma-separated fields to clear, e.g. code,project,pdf
         required: false
@@ -138,11 +129,10 @@ jobs:
           APPLICATIONS: ${{ inputs.applications }}
           CODE: ${{ inputs.code }}
           PROJECT: ${{ inputs.project }}
-          FEATURED: ${{ inputs.featured }}
           CLEAR: ${{ inputs.clear }}
           REVIEWER: ${{ github.actor }}
         run: |
-          args=(--selector "$SELECTOR" --reviewer "$REVIEWER" --featured "$FEATURED")
+          args=(--selector "$SELECTOR" --reviewer "$REVIEWER")
           if [ "$MANAGE_ACTION" = "delete" ]; then args+=(--delete); fi
           if [ -n "$TITLE" ]; then args+=(--title "$TITLE"); fi
           if [ -n "$AUTHORS" ]; then args+=(--authors "$AUTHORS"); fi

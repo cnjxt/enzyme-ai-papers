@@ -32,7 +32,7 @@ jobs:
         run: gh issue comment "${{ github.event.issue.number }}" --body-file /tmp/paper-preview.md
 
   accept:
-    if: github.event.action == 'labeled' && (github.event.label.name == 'accepted' || github.event.label.name == 'featured')
+    if: github.event.action == 'labeled' && github.event.label.name == 'accepted'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

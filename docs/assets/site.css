@@ -335,10 +335,6 @@
   padding: 1rem;
 }
 
-.paper-card.is-featured {
-  border-color: rgba(15, 118, 110, 0.38);
-}
-
 .paper-card[hidden] {
   display: none;
 }

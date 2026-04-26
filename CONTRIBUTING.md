@@ -29,7 +29,6 @@ tags when possible.
 Maintainers review the issue preview and use labels as the curation interface:
 
 - `accepted`: include the paper in the accepted archive.
-- `featured`: mark it as a Pick of the Week candidate.
 - `needs-info`: ask the submitter for more context.
 - `rejected`: decline the suggestion.
 
