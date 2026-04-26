@@ -48,6 +48,11 @@ trusted direct publication from a single URL. That workflow writes to `main`
 and deploys Pages after running the same generation, validation, tests, and
 MkDocs build steps.
 
+If a paper was published by mistake or needs a metadata correction, repository
+owners can use the `Manage Paper` GitHub Actions workflow. It can update common
+fields or delete a paper by id, DOI, or URL, then regenerates README and the
+website from the corrected data.
+
 ## Public Project Boundary
 
 - Visitors can submit suggestions, not accepted records.
@@ -55,6 +60,8 @@ MkDocs build steps.
 - Localhost, private IP, `.local`, and non-standard-port URLs are rejected by
   the curation scripts.
 - The curation workflow opens a pull request instead of merging directly.
+- Owner-only direct workflows are limited by `github.actor ==
+  github.repository_owner` and write to `main` only after validation passes.
 
 ## Local Validation
 

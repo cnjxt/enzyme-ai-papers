@@ -1,0 +1,202 @@
+name: Manage Paper
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Update or delete an accepted paper
+        required: true
+        default: update
+        type: choice
+        options:
+          - update
+          - delete
+      selector:
+        description: Paper id, DOI, or URL
+        required: true
+        type: string
+      title:
+        description: Optional title update
+        required: false
+        type: string
+      authors:
+        description: Optional comma-separated author list update
+        required: false
+        type: string
+      year:
+        description: Optional publication year update
+        required: false
+        type: string
+      date:
+        description: Optional publication date update, YYYY-MM-DD
+        required: false
+        type: string
+      source:
+        description: Optional source update, e.g. biorxiv
+        required: false
+        type: string
+      doi:
+        description: Optional DOI update
+        required: false
+        type: string
+      url:
+        description: Optional paper URL update
+        required: false
+        type: string
+      pdf:
+        description: Optional PDF URL update
+        required: false
+        type: string
+      one_liner:
+        description: Optional short summary update
+        required: false
+        type: string
+      why_it_matters:
+        description: Optional curator note update
+        required: false
+        type: string
+      topics:
+        description: Optional comma-separated canonical topic tags
+        required: false
+        type: string
+      methods:
+        description: Optional comma-separated canonical method tags
+        required: false
+        type: string
+      evidence:
+        description: Optional comma-separated canonical evidence tags
+        required: false
+        type: string
+      applications:
+        description: Optional comma-separated canonical application tags
+        required: false
+        type: string
+      code:
+        description: Optional code URL update
+        required: false
+        type: string
+      project:
+        description: Optional project URL update
+        required: false
+        type: string
+      featured:
+        description: Keep, set, or unset Pick of the Week candidate
+        required: true
+        default: keep
+        type: choice
+        options:
+          - keep
+          - "true"
+          - "false"
+      clear:
+        description: Optional comma-separated fields to clear, e.g. code,project,pdf
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: manage-paper
+  cancel-in-progress: false
+
+jobs:
+  manage:
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Manage paper metadata
+        env:
+          MANAGE_ACTION: ${{ inputs.action }}
+          SELECTOR: ${{ inputs.selector }}
+          TITLE: ${{ inputs.title }}
+          AUTHORS: ${{ inputs.authors }}
+          YEAR: ${{ inputs.year }}
+          DATE: ${{ inputs.date }}
+          SOURCE: ${{ inputs.source }}
+          DOI: ${{ inputs.doi }}
+          URL: ${{ inputs.url }}
+          PDF: ${{ inputs.pdf }}
+          ONE_LINER: ${{ inputs.one_liner }}
+          WHY_IT_MATTERS: ${{ inputs.why_it_matters }}
+          TOPICS: ${{ inputs.topics }}
+          METHODS: ${{ inputs.methods }}
+          EVIDENCE: ${{ inputs.evidence }}
+          APPLICATIONS: ${{ inputs.applications }}
+          CODE: ${{ inputs.code }}
+          PROJECT: ${{ inputs.project }}
+          FEATURED: ${{ inputs.featured }}
+          CLEAR: ${{ inputs.clear }}
+          REVIEWER: ${{ github.actor }}
+        run: |
+          args=(--selector "$SELECTOR" --reviewer "$REVIEWER" --featured "$FEATURED")
+          if [ "$MANAGE_ACTION" = "delete" ]; then args+=(--delete); fi
+          if [ -n "$TITLE" ]; then args+=(--title "$TITLE"); fi
+          if [ -n "$AUTHORS" ]; then args+=(--authors "$AUTHORS"); fi
+          if [ -n "$YEAR" ]; then args+=(--year "$YEAR"); fi
+          if [ -n "$DATE" ]; then args+=(--date "$DATE"); fi
+          if [ -n "$SOURCE" ]; then args+=(--source "$SOURCE"); fi
+          if [ -n "$DOI" ]; then args+=(--doi "$DOI"); fi
+          if [ -n "$URL" ]; then args+=(--url "$URL"); fi
+          if [ -n "$PDF" ]; then args+=(--pdf "$PDF"); fi
+          if [ -n "$ONE_LINER" ]; then args+=(--one-liner "$ONE_LINER"); fi
+          if [ -n "$WHY_IT_MATTERS" ]; then args+=(--why-it-matters "$WHY_IT_MATTERS"); fi
+          if [ -n "$TOPICS" ]; then args+=(--topics "$TOPICS"); fi
+          if [ -n "$METHODS" ]; then args+=(--methods "$METHODS"); fi
+          if [ -n "$EVIDENCE" ]; then args+=(--evidence "$EVIDENCE"); fi
+          if [ -n "$APPLICATIONS" ]; then args+=(--applications "$APPLICATIONS"); fi
+          if [ -n "$CODE" ]; then args+=(--code "$CODE"); fi
+          if [ -n "$PROJECT" ]; then args+=(--project "$PROJECT"); fi
+          if [ -n "$CLEAR" ]; then args+=(--clear "$CLEAR"); fi
+          python scripts/manage_paper.py "${args[@]}" | tee manage-result.txt
+      - name: Generate docs
+        run: python scripts/build_docs.py
+      - name: Validate metadata
+        run: python scripts/validate_papers.py
+      - name: Run tests
+        run: python -m unittest discover -s tests
+      - name: Build MkDocs site
+        run: mkdocs build --strict
+      - name: Commit paper management change
+        id: commit
+        run: |
+          git add data README.md docs
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No repository changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Manage accepted paper"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Summary
+        run: |
+          {
+            echo "## Manage Paper"
+            echo
+            cat manage-result.txt
+            echo
+            echo "Repository changes committed: ${{ steps.commit.outputs.changed }}"
+          } >> "$GITHUB_STEP_SUMMARY"

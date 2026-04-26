@@ -32,6 +32,7 @@ hide:
 <aside class="issue-card">
   <span class="issue-kicker">Latest issue</span>
   <strong>2026-W17</strong>
+  <span class="issue-range">2026.4.20-</span>
 </aside>
 
 </section>
@@ -59,7 +60,7 @@ hide:
 <section class="weekly-history">
   <div class="section-label">Weekly issues</div>
   <div class="weekly-links">
-    <a class="weekly-link" href="#week-2026-W17"><strong>2026-W17</strong><span>2026-04-26</span></a>
+    <a class="weekly-link" href="#week-2026-W17"><strong>2026-W17</strong><span>2026.4.20-</span></a>
   </div>
 </section>
 
@@ -67,7 +68,7 @@ hide:
 <section class="paper-sections weekly-archive">
 
   <section class="paper-group" id="week-2026-W17">
-    <div class="section-label">2026-W17</div>
+    <div class="section-label">2026-W17: 2026.4.20-</div>
     <h2>Enzyme AI Papers Weekly - 2026-W17</h2>
     <p class="weekly-summary">A minimal seed weekly digest used to validate the repository workflow.</p>
     <div class="section-label">Pick of the Week</div>

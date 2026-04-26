@@ -4,6 +4,7 @@ import html
 import shutil
 import sys
 from collections import defaultdict
+from datetime import date, timedelta
 from typing import Any
 
 from paperlib import (
@@ -12,6 +13,7 @@ from paperlib import (
     TAG_GROUPS,
     compact_paper_item,
     index_papers,
+    iso_week,
     load_taxonomy,
     load_yaml,
     load_papers,
@@ -46,7 +48,7 @@ def main() -> int:
     weeklies = derive_weeklies(papers, paper_index)
     latest = weeklies[0] if weeklies else None
 
-    build_readme(latest, paper_index)
+    build_readme(weeklies, paper_index)
     clean_docs_dir()
     build_home_page(latest, paper_index, papers)
     build_archive_page(papers, paper_index, weeklies, latest)
@@ -62,7 +64,7 @@ def clean_docs_dir() -> None:
     (DOCS_DIR / "assets").mkdir(parents=True, exist_ok=True)
 
 
-def build_readme(latest: dict[str, Any] | None, paper_index: dict[str, Any]) -> None:
+def build_readme(weeklies: list[dict[str, Any]], paper_index: dict[str, Any]) -> None:
     lines = [
         "# Enzyme AI Papers",
         "",
@@ -71,36 +73,13 @@ def build_readme(latest: dict[str, Any] | None, paper_index: dict[str, Any]) -> 
         "",
     ]
 
+    latest = weeklies[0] if weeklies else None
     if latest is None:
-        lines.extend(["## Latest Weekly", "", "No weekly digest has been published yet.", ""])
+        lines.extend(["## This Week", "", "No weekly digest has been published yet.", ""])
     else:
-        weekly = latest
-        commentary = weekly.get("commentary", {})
-        pick = paper_index[weekly["pick_of_the_week"]]
-
-        lines.extend(
-            [
-                f"## Latest Weekly: {weekly['title']}",
-                "",
-                weekly["summary"],
-                "",
-                "### Pick of the Week",
-                "",
-                compact_paper_item(pick),
-                "",
-                f"> {commentary.get(pick.paper_id, pick.data['why_it_matters'])}",
-                "",
-                "### This Week",
-                "",
-            ]
-        )
-
-        for section in weekly["sections"].values():
-            lines.append(f"#### {section['title']}")
-            lines.append("")
-            for paper_id in section["papers"]:
-                lines.append(compact_paper_item(paper_index[paper_id]))
-            lines.append("")
+        append_readme_week(lines, latest, paper_index, readme_week_label(latest, 0))
+        if len(weeklies) > 1:
+            append_readme_week(lines, weeklies[1], paper_index, readme_week_label(weeklies[1], 1))
 
     lines.extend(
         [
@@ -119,6 +98,40 @@ def build_readme(latest: dict[str, Any] | None, paper_index: dict[str, Any]) -> 
     )
 
     write_text(ROOT / "README.md", "\n".join(lines).rstrip() + "\n")
+
+
+def append_readme_week(
+    lines: list[str],
+    weekly: dict[str, Any],
+    paper_index: dict[str, Any],
+    label: str,
+) -> None:
+    commentary = weekly.get("commentary", {})
+    pick = paper_index[weekly["pick_of_the_week"]]
+
+    lines.extend(
+        [
+            f"## {label}: {weekly['title']} ({weekly['date_range']})",
+            "",
+            weekly["summary"],
+            "",
+            "### Pick of the Week",
+            "",
+            compact_paper_item(pick),
+            "",
+            f"> {commentary.get(pick.paper_id, pick.data['why_it_matters'])}",
+            "",
+            "### Papers",
+            "",
+        ]
+    )
+
+    for section in weekly["sections"].values():
+        lines.append(f"#### {section['title']}")
+        lines.append("")
+        for paper_id in section["papers"]:
+            lines.append(compact_paper_item(paper_index[paper_id]))
+        lines.append("")
 
 
 def build_home_page(latest: dict[str, Any] | None, paper_index: dict[str, Any], papers: list[Any]) -> None:
@@ -150,6 +163,13 @@ def render_weekly(weekly: dict[str, Any], paper_index: dict[str, Any]) -> str:
 
     chunks: list[str] = [
         f"""
+<section class="weekly-overview">
+  <div class="section-label">{escape(readme_week_label(weekly, 0))}</div>
+  <h2>{escape(weekly['title'])}</h2>
+  <p class="weekly-range">{escape(weekly['week'])}: {escape(weekly['date_range'])}</p>
+  <p class="weekly-summary">{escape(weekly['summary'])}</p>
+</section>
+
 <section class="pick" id="weekly-papers">
   <div class="section-label">Pick of the Week</div>
   {render_paper_card(pick, commentary.get(pick.paper_id), featured=True)}
@@ -317,11 +337,15 @@ def derive_weeklies(papers: list[Any], paper_index: dict[str, Any]) -> list[dict
 
         commentary = override.get("commentary", {}) if isinstance(override, dict) else {}
         latest_date = max(parse_record_date(record.accepted_at) for record in sorted_records).isoformat()
+        week_start, week_end = iso_week_bounds(week)
         weeklies.append(
             {
                 "week": week,
                 "title": override.get("title", f"Enzyme AI Papers Weekly - {week}") if isinstance(override, dict) else f"Enzyme AI Papers Weekly - {week}",
                 "date": override.get("date", latest_date) if isinstance(override, dict) else latest_date,
+                "start_date": week_start.isoformat(),
+                "end_date": week_end.isoformat(),
+                "date_range": format_week_range(week),
                 "summary": override.get("summary", auto_summary(week, sorted_records)) if isinstance(override, dict) else auto_summary(week, sorted_records),
                 "pick_of_the_week": pick,
                 "sections": sections,
@@ -383,11 +407,42 @@ def auto_summary(week: str, records: list[Any]) -> str:
     return f"{count} accepted enzyme AI or computational enzyme {noun} collected for {week}."
 
 
+def iso_week_bounds(week: str) -> tuple[date, date]:
+    match = week.split("-W", 1)
+    if len(match) != 2:
+        raise ValueError(f"invalid ISO week: {week}")
+    start = date.fromisocalendar(int(match[0]), int(match[1]), 1)
+    return start, start + timedelta(days=6)
+
+
+def format_week_range(week: str) -> str:
+    start, end = iso_week_bounds(week)
+    if start <= date.today() <= end:
+        return f"{format_dot_date(start)}-"
+    if start.year == end.year:
+        return f"{format_dot_date(start)}-{end.month}.{end.day}"
+    return f"{format_dot_date(start)}-{format_dot_date(end)}"
+
+
+def format_dot_date(value: date) -> str:
+    return f"{value.year}.{value.month}.{value.day}"
+
+
+def readme_week_label(weekly: dict[str, Any], index: int) -> str:
+    current_week = iso_week(date.today().isoformat())
+    last_week = iso_week((date.today() - timedelta(days=7)).isoformat())
+    if index == 0 and weekly["week"] == current_week:
+        return "This Week"
+    if index == 1 and weekly["week"] == last_week:
+        return "Last Week"
+    return "Latest Week" if index == 0 else "Previous Week"
+
+
 def render_weekly_history(weeklies: list[dict[str, Any]]) -> str:
     if not weeklies:
         return ""
     links = "\n".join(
-        f'<a class="weekly-link" href="#week-{escape(weekly["week"])}"><strong>{escape(weekly["week"])}</strong><span>{escape(str(weekly["date"]))}</span></a>'
+        f'<a class="weekly-link" href="#week-{escape(weekly["week"])}"><strong>{escape(weekly["week"])}</strong><span>{escape(str(weekly["date_range"]))}</span></a>'
         for weekly in weeklies
     )
     return f"""
@@ -424,7 +479,7 @@ def render_weekly_archive(weeklies: list[dict[str, Any]], paper_index: dict[str,
         chunks.append(
             f"""
   <section class="paper-group" id="week-{escape(weekly['week'])}">
-    <div class="section-label">{escape(weekly['week'])}</div>
+    <div class="section-label">{escape(weekly['week'])}: {escape(weekly['date_range'])}</div>
     <h2>{escape(weekly['title'])}</h2>
     <p class="weekly-summary">{escape(weekly['summary'])}</p>
     <div class="section-label">Pick of the Week</div>
@@ -497,6 +552,7 @@ def render_issue_card(issue: dict[str, Any] | None, issue_href: str) -> str:
 <aside class="issue-card">
   <span class="issue-kicker">Latest issue</span>
   <strong>{escape(issue['week'])}</strong>
+  <span class="issue-range">{escape(issue['date_range'])}</span>
 </aside>
 """
 
@@ -737,6 +793,13 @@ SITE_CSS = """
   margin: 0;
 }
 
+.issue-range {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.78rem;
+  font-weight: 680;
+  margin-left: 0.55rem;
+}
+
 .issue-card p {
   display: none;
   color: rgba(255, 255, 255, 0.82);
@@ -822,6 +885,25 @@ SITE_CSS = """
 .pick {
   border-top: 1px solid var(--paper-line);
   padding: 1.4rem 0 1.5rem;
+}
+
+.weekly-overview {
+  border-top: 1px solid var(--paper-line);
+  padding: 1.35rem 0 1.1rem;
+}
+
+.weekly-overview h2 {
+  color: var(--paper-ink);
+  font-size: 1.35rem;
+  line-height: 1.18;
+  margin: 0 0 0.35rem;
+}
+
+.weekly-range {
+  color: var(--paper-accent-dark);
+  font-size: 0.9rem;
+  font-weight: 760;
+  margin: 0 0 0.45rem;
 }
 
 .paper-group {

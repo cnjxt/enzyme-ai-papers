@@ -48,7 +48,8 @@ class ProjectWorkflowTest(unittest.TestCase):
         self.assertIn("Pick of the Week", index)
         self.assertIn("paper-submit-form", info)
         self.assertIn("Open GitHub Submission", info)
-        self.assertIn("Latest Weekly", readme)
+        self.assertIn("Enzyme AI Papers Weekly", readme)
+        self.assertRegex(readme, r"2026-W17.*2026\.4\.20-")
         self.assertIn("MORE_INFO.md", readme)
 
     def test_fetch_candidates_is_safe_placeholder(self) -> None:
@@ -158,6 +159,37 @@ class ProjectWorkflowTest(unittest.TestCase):
         self.assertIn("curator: maintainer", result.stdout)
         self.assertIn("featured: false", result.stdout)
         self.assertIn("https://doi.org/10.1234/direct.publish.example", result.stdout)
+
+    def test_manage_paper_dry_run_updates_seed_metadata(self) -> None:
+        result = self.run_script(
+            "scripts/manage_paper.py",
+            "--selector",
+            "2026-example-enzyme-plm",
+            "--one-liner",
+            "Updated direct management summary.",
+            "--featured",
+            "false",
+            "--reviewer",
+            "maintainer",
+            "--dry-run",
+        )
+
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("id: 2026-example-enzyme-plm", result.stdout)
+        self.assertIn("one_liner: Updated direct management summary.", result.stdout)
+        self.assertIn("featured: false", result.stdout)
+
+    def test_manage_paper_dry_run_can_select_by_url_for_delete(self) -> None:
+        result = self.run_script(
+            "scripts/manage_paper.py",
+            "--selector",
+            "https://example.org/example-enzyme-language-model-paper",
+            "--delete",
+            "--dry-run",
+        )
+
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("Would delete paper: 2026-example-enzyme-plm", result.stdout)
 
 
 if __name__ == "__main__":

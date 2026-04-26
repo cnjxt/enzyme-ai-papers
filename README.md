@@ -3,7 +3,7 @@
 A curated weekly digest of AI and computational papers for enzyme design, engineering, function prediction, and biocatalysis.
 URL-first, curator-reviewed, and designed for quick reading.
 
-## Latest Weekly: Enzyme AI Papers Weekly - 2026-W17
+## This Week: Enzyme AI Papers Weekly - 2026-W17 (2026.4.20-)
 
 A minimal seed weekly digest used to validate the repository workflow.
 
@@ -15,7 +15,7 @@ A minimal seed weekly digest used to validate the repository workflow.
 
 > A seed record that demonstrates the weekly digest format.
 
-### This Week
+### Papers
 
 #### Enzyme Design
 

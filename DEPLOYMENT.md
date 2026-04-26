@@ -219,6 +219,20 @@ code link, and featured flag. It creates or updates the paper YAML directly on
 `main`, regenerates docs, runs validation/tests/MkDocs build, commits the
 changes, and deploys the built Pages artifact in the same workflow.
 
+### Owner Paper Management
+
+File:
+
+```text
+.github/workflows/manage-paper.yml
+```
+
+Runs only by manual dispatch from the Actions tab and only when the actor is
+the repository owner. It can update selected metadata fields or delete an
+accepted paper by paper id, DOI, or URL. After the change, it regenerates
+README and docs, runs validation/tests/MkDocs build, commits to `main`, and
+deploys Pages.
+
 ## 9. End-to-End Acceptance Test
 
 After deployment, test the real workflow:
@@ -233,6 +247,10 @@ After deployment, test the real workflow:
 8. Confirm `README.md` and `docs/` include the paper.
 9. Merge the PR.
 10. Confirm GitHub Pages updates.
+
+For a deletion or metadata correction test, use the owner-only `Manage Paper`
+workflow on a non-public test record and confirm the generated README/docs no
+longer include the deleted entry, or include the corrected fields.
 
 Purpose: this verifies the real repository permissions, issue template,
 metadata fetch, generated PR, validation, and Pages publication.
@@ -250,6 +268,8 @@ Before announcing the project publicly:
 - Confirm one real paper suggestion can complete the full issue-to-PR flow.
 - Confirm the owner-only `Publish URL` workflow can publish one trusted URL
   when direct publication is part of the operating model.
+- Confirm the owner-only `Manage Paper` workflow can correct or delete a test
+  record when direct maintenance is part of the operating model.
 
 ## Operational Notes
 

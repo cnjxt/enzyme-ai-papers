@@ -169,6 +169,7 @@ Deploy from a branch -> main -> /docs
 ```text
 .github/workflows/deploy-pages.yml
 .github/workflows/publish-url.yml
+.github/workflows/manage-paper.yml
 ```
 
 `deploy-pages.yml` 的作用：每次 `main` 更新后：
@@ -182,6 +183,9 @@ Deploy from a branch -> main -> /docs
 `publish-url.yml` 的作用：仓库 owner 在 Actions 页面只输入 URL，就能直接
 生成 paper YAML、更新 docs、校验、提交到 `main`，并在同一个 workflow 里部署
 Pages。
+
+`manage-paper.yml` 的作用：仓库 owner 可以按 paper id、DOI 或 URL 修改或删除
+已经收录的论文。它会重新生成 README/docs、校验、提交到 `main`，并部署 Pages。
 
 ### 11. 验证线上部署
 
@@ -216,6 +220,12 @@ owner 快速发布流程：
 
 ```text
 Actions -> Publish URL -> 输入论文 URL -> 自动生成/校验/提交 main -> 网站自动更新
+```
+
+owner 修改或删除流程：
+
+```text
+Actions -> Manage Paper -> 输入 paper id/DOI/URL -> 修改或删除 -> 自动生成/校验/提交 main -> 网站自动更新
 ```
 
 ### 1. 用户提交论文
@@ -305,7 +315,51 @@ PR 合并到 `main` 后：
 
 作用：数据和网站一起进入正式发布状态。
 
-## 三、多种提交和 PR 方法
+### 7. 如果发现收录错了
+
+推荐处理方式：
+
+- 小错误：用 `Manage Paper` 更新字段，例如摘要、标签、代码链接或 featured。
+- 错收录：用 `Manage Paper` 删除该 paper。
+- 复杂重写：本地开分支直接改 YAML，再生成 docs 并开 PR。
+
+作用：所有修改都回到 `data/papers/` 这一份数据源，README 和网站再从同一份
+数据重新生成，避免只改网页或只改 README 导致不一致。
+
+## 三、周报和日期范围怎么计算
+
+每篇论文都有 `accepted_at`。系统用它自动计算 ISO week，例如：
+
+```yaml
+accepted_at: "2026-04-20"
+```
+
+会进入：
+
+```text
+2026-W17
+```
+
+README 和网站会显示周日期范围：
+
+```text
+2026-W17: 2026.4.20-
+```
+
+如果该周已经结束，则显示完整范围：
+
+```text
+2026-W16: 2026.4.13-4.19
+```
+
+README 最多展示两个周段：
+
+- 当前最新周：`This Week` 或 `Latest Week`
+- 上一个周段：`Last Week` 或 `Previous Week`
+
+作用：README 不只展示一个孤立的本周内容，也能看到上一个周段，仓库首页更有连续性。
+
+## 四、多种提交和 PR 方法
 
 ### 方法 A：网站 Submit 页提交
 
@@ -370,7 +424,26 @@ PR 合并到 `main` 后：
 
 作用：这是维护者日常收录论文的主要动作。
 
-### 方法 E：本地手动建分支提交 PR
+### 方法 E：owner 在 Actions 里修改或删除已收录论文
+
+适合：文章发布后发现摘要、标签、链接错了，或者整篇收录错了需要删除。
+
+步骤：
+
+1. 打开 `https://github.com/<owner>/enzyme-ai-papers/actions`
+2. 选择 `Manage Paper`
+3. 点击 `Run workflow`
+4. `action` 选择 `update` 或 `delete`
+5. `selector` 填 paper id、DOI 或 URL
+6. 如果是修改，填写需要更新的字段；空字段表示保持原值
+7. 如果要清空链接字段，在 `clear` 里填字段名，例如 `code,project,pdf`
+8. 运行 workflow
+9. 等 workflow 完成后打开网站确认更新
+
+作用：这是 owner-only 的纠错通道。它会重新生成 `README.md` 和 `docs/`，跑
+validation/tests/MkDocs build，提交到 `main`，并部署 Pages。
+
+### 方法 F：本地手动建分支提交 PR
 
 适合：自动 metadata 不够好，或维护者想完全手动维护 YAML。
 
@@ -409,7 +482,7 @@ git push origin add-paper-short-name
 
 作用：适合更精细的人工整理；仍然保留 PR review 和 CI 流程。
 
-### 方法 F：GitHub 网页直接编辑后开 PR
+### 方法 G：GitHub 网页直接编辑后开 PR
 
 适合：小修 metadata，例如改标签、改摘要、改错别字。
 
@@ -424,7 +497,7 @@ git push origin add-paper-short-name
 注意：如果改了 `data/papers/`，最好本地或 Actions 重新生成 `README.md` 和 `docs/`。
 否则 `Validate` 里的 `git diff --exit-code` 可能失败。
 
-### 方法 G：维护者直接合并自动 curation PR
+### 方法 H：维护者直接合并自动 curation PR
 
 适合：metadata preview 和 PR diff 都已经准确。
 
@@ -441,7 +514,7 @@ checks；但创建 PR 前的 `issue-curation` job 已经运行了生成、校验
 如果要强制所有自动 PR 也显示 PR checks，需要改用单独 PAT 创建 PR，或调整
 branch protection 规则。
 
-## 四、用示例文章做一次端到端测试
+## 五、用示例文章做一次端到端测试
 
 示例 URL：
 
@@ -470,7 +543,7 @@ Authors: Neupane, P.; Liu, J.; Cheng, J.
 8. 等 Pages 部署完成
 9. 打开网站确认文章出现在 Weekly 或 Archive
 
-## 五、常见问题
+## 六、常见问题
 
 ### 线上页面像 GitHub 默认 Markdown 页面
 
@@ -522,3 +595,11 @@ python3 scripts/build_docs.py
 git add README.md docs/
 git commit -m "Regenerate docs"
 ```
+
+### 删除后周报报错
+
+原因：某个 `data/weekly/*.yml` 里还引用了被删除的 paper id。
+
+处理：优先用 `Manage Paper` 删除，它会自动清理 weekly override 里的引用。如果
+手动删除 YAML，则需要同步检查 `data/weekly/` 里的 `pick_of_the_week`、
+`sections` 和 `commentary`。
