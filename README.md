@@ -22,6 +22,9 @@ A minimal seed weekly digest used to validate the repository workflow.
 - **Example enzyme language model paper**  
   `enzyme-design` `function-prediction` `protein-language-model` `active-learning` `benchmark-only` `general`  
   Demonstrates a compact workflow for ranking enzyme variants with a protein language model. [paper](https://example.org/example-enzyme-language-model-paper) · [code](https://github.com/example/example-enzyme-plm)
+- **Improving AlphaFold3 by Engineering MSA and Template Inputs**  
+  `enzyme-design` `bayesian-optimization` `computational-only` `general`  
+  Workflow test for bioRxiv metadata parsing and curation automation. [paper](https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1) · [pdf](https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1.full.pdf)
 
 ## More Information
 

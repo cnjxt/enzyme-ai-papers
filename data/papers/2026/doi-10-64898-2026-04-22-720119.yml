@@ -1,0 +1,41 @@
+id: doi-10-64898-2026-04-22-720119
+title: Improving AlphaFold3 by Engineering MSA and Template Inputs
+authors:
+- Neupane, P.
+- Liu, J.
+- Cheng, J.
+year: 2026
+date: '2026-04-23'
+accepted_at: '2026-04-26T13:08:55+00:00'
+source: biorxiv
+doi: 10.64898/2026.04.22.720119
+url: https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1
+pdf: https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1.full.pdf
+code: ''
+project: ''
+preprint_url: https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1
+published_url: ''
+topics:
+- enzyme-design
+methods:
+- bayesian-optimization
+evidence:
+- computational-only
+applications:
+- general
+one_liner: Workflow test for bioRxiv metadata parsing and curation automation.
+why_it_matters: Workflow test for bioRxiv metadata parsing and curation automation.
+  This paper is relevant as a structure-prediction methods example for AlphaFold3
+  workflows that may support enzyme modeling.
+curator: cnjxt
+featured: false
+issue: 2
+submitted_by: cnjxt
+reviewed_by: cnjxt
+notes: 'Accepted from GitHub issue #2.'
+curation:
+  status: accepted
+  issue: 2
+  submitted_by: cnjxt
+  reviewed_by: cnjxt
+  featured: false

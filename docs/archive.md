@@ -43,11 +43,13 @@ hide:
   <input id="paper-search" type="search" placeholder="Search title, tag, note, author">
   <button class="filter-chip is-active" data-filter="all" type="button">All</button>
   <button class="filter-chip" data-filter="enzyme-design" type="button">enzyme-design</button>
+  <button class="filter-chip" data-filter="bayesian-optimization" type="button">bayesian-optimization</button>
+  <button class="filter-chip" data-filter="computational-only" type="button">computational-only</button>
+  <button class="filter-chip" data-filter="general" type="button">general</button>
   <button class="filter-chip" data-filter="function-prediction" type="button">function-prediction</button>
   <button class="filter-chip" data-filter="protein-language-model" type="button">protein-language-model</button>
   <button class="filter-chip" data-filter="active-learning" type="button">active-learning</button>
   <button class="filter-chip" data-filter="benchmark-only" type="button">benchmark-only</button>
-  <button class="filter-chip" data-filter="general" type="button">general</button>
 </section>
 
 
@@ -82,6 +84,24 @@ hide:
 </article>
 
     
+    <div class="paper-subgroup">
+      <div class="section-label">Enzyme Design</div>
+      <div class="paper-grid">
+<article class="paper-card" data-tags="enzyme-design bayesian-optimization computational-only general" data-search="improving alphafold3 by engineering msa and template inputs neupane, p., liu, j., cheng, j. workflow test for biorxiv metadata parsing and curation automation. workflow test for biorxiv metadata parsing and curation automation. this paper is relevant as a structure-prediction methods example for alphafold3 workflows that may support enzyme modeling. enzyme-design bayesian-optimization computational-only general">
+  <div class="paper-meta">
+    <span>biorxiv</span>
+    <span>2026</span>
+  </div>
+  <h3>Improving AlphaFold3 by Engineering MSA and Template Inputs</h3>
+  <p class="authors">Neupane, P., Liu, J., Cheng, J.</p>
+  <p>Workflow test for bioRxiv metadata parsing and curation automation.</p>
+  <p class="why">Workflow test for bioRxiv metadata parsing and curation automation. This paper is relevant as a structure-prediction methods example for AlphaFold3 workflows that may support enzyme modeling.</p>
+  <div class="tags"><span>enzyme-design</span><span>bayesian-optimization</span><span>computational-only</span><span>general</span></div>
+  <div class="paper-links"><a href="https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg><span>Paper</span></a><a href="https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1.full.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M8.5 16h7"/></svg><span>PDF</span></a></div>
+</article>
+</div>
+    </div>
+
   </section>
 
 </section>
@@ -91,6 +111,20 @@ hide:
   <div class="section-label">2026</div>
   <div class="paper-grid">
     
+<article class="paper-card" data-tags="enzyme-design bayesian-optimization computational-only general" data-search="improving alphafold3 by engineering msa and template inputs neupane, p., liu, j., cheng, j. workflow test for biorxiv metadata parsing and curation automation. workflow test for biorxiv metadata parsing and curation automation. this paper is relevant as a structure-prediction methods example for alphafold3 workflows that may support enzyme modeling. enzyme-design bayesian-optimization computational-only general">
+  <div class="paper-meta">
+    <span>biorxiv</span>
+    <span>2026</span>
+  </div>
+  <h3>Improving AlphaFold3 by Engineering MSA and Template Inputs</h3>
+  <p class="authors">Neupane, P., Liu, J., Cheng, J.</p>
+  <p>Workflow test for bioRxiv metadata parsing and curation automation.</p>
+  <p class="why">Workflow test for bioRxiv metadata parsing and curation automation. This paper is relevant as a structure-prediction methods example for AlphaFold3 workflows that may support enzyme modeling.</p>
+  <div class="tags"><span>enzyme-design</span><span>bayesian-optimization</span><span>computational-only</span><span>general</span></div>
+  <div class="paper-links"><a href="https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg><span>Paper</span></a><a href="https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1.full.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M8.5 16h7"/></svg><span>PDF</span></a></div>
+</article>
+
+
 <article class="paper-card" data-tags="enzyme-design function-prediction protein-language-model active-learning benchmark-only general" data-search="example enzyme language model paper first author, second author demonstrates a compact workflow for ranking enzyme variants with a protein language model. this seed entry shows the required metadata format and how concise curator notes should read. replace it with real seed papers before launching the public repository. enzyme-design function-prediction protein-language-model active-learning benchmark-only general">
   <div class="paper-meta">
     <span>example</span>
