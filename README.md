@@ -26,6 +26,12 @@ A minimal seed weekly digest used to validate the repository workflow.
   `enzyme-design` `bayesian-optimization` `computational-only` `general`  
   Workflow test for bioRxiv metadata parsing and curation automation. [paper](https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1) · [pdf](https://www.biorxiv.org/content/10.64898/2026.04.22.720119v1.full.pdf)
 
+#### Stability and expression
+
+- **Beyond Structure and Affinity: Context-Dependent Signals for de novo Binder Success**  
+  `stability-expression` `benchmark-dataset` `bayesian-optimization` `computational-only` `general`  
+  Directly published paper for enzyme AI curation: Beyond Structure and Affinity: Context-Dependent Signals for de novo Binder Success. [paper](https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1) · [pdf](https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1.full.pdf)
+
 ## More Information
 
 - Website source: `docs/`
@@ -33,5 +39,6 @@ A minimal seed weekly digest used to validate the repository workflow.
 - Maintainers accept papers by applying the `accepted` label.
 - How to read, submit, and maintain the project: [MORE_INFO.md](MORE_INFO.md)
 - How to deploy a public instance: [DEPLOYMENT.md](DEPLOYMENT.md)
+- Step-by-step deployment and submission runbook: [DEPLOYMENT_RUNBOOK.md](DEPLOYMENT_RUNBOOK.md)
 - Curation rules: [CURATION.md](CURATION.md)
 - Contribution workflow: [CONTRIBUTING.md](CONTRIBUTING.md)

@@ -42,6 +42,11 @@ hide:
   <label class="search-label" for="paper-search">Search</label>
   <input id="paper-search" type="search" placeholder="Search title, tag, note, author">
   <button class="filter-chip is-active" data-filter="all" type="button">All</button>
+  <button class="filter-chip" data-filter="stability-expression" type="button">stability-expression</button>
+  <button class="filter-chip" data-filter="benchmark-dataset" type="button">benchmark-dataset</button>
+  <button class="filter-chip" data-filter="bayesian-optimization" type="button">bayesian-optimization</button>
+  <button class="filter-chip" data-filter="computational-only" type="button">computational-only</button>
+  <button class="filter-chip" data-filter="general" type="button">general</button>
   <button class="filter-chip" data-filter="enzyme-design" type="button">enzyme-design</button>
   <button class="filter-chip" data-filter="bayesian-optimization" type="button">bayesian-optimization</button>
   <button class="filter-chip" data-filter="computational-only" type="button">computational-only</button>

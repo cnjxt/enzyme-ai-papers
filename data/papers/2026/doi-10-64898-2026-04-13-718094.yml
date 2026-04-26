@@ -1,0 +1,40 @@
+id: doi-10-64898-2026-04-13-718094
+title: 'Beyond Structure and Affinity: Context-Dependent Signals for de novo Binder
+  Success'
+authors:
+- Bozkurt, C.
+year: 2026
+date: '2026-04-15'
+accepted_at: '2026-04-26T14:06:52+00:00'
+source: biorxiv
+doi: 10.64898/2026.04.13.718094
+url: https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1
+pdf: https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1.full.pdf
+code: ''
+project: ''
+preprint_url: https://www.biorxiv.org/content/10.64898/2026.04.13.718094v1
+published_url: ''
+topics:
+- stability-expression
+- benchmark-dataset
+methods:
+- bayesian-optimization
+evidence:
+- computational-only
+applications:
+- general
+one_liner: 'Directly published paper for enzyme AI curation: Beyond Structure and
+  Affinity: Context-Dependent Signals for de novo Binder Success.'
+why_it_matters: Directly published by cnjxt from the project owner URL workflow.
+curator: cnjxt
+featured: false
+issue: ''
+submitted_by: cnjxt
+reviewed_by: cnjxt
+notes: Published directly from URL by cnjxt.
+curation:
+  status: accepted
+  issue: ''
+  submitted_by: cnjxt
+  reviewed_by: cnjxt
+  featured: false

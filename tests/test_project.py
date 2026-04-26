@@ -134,6 +134,31 @@ class ProjectWorkflowTest(unittest.TestCase):
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
         self.assertIn("public paper URL", result.stderr)
 
+    def test_publish_url_dry_run_generates_paper_yaml(self) -> None:
+        result = self.run_script(
+            "scripts/publish_url.py",
+            "--url",
+            "https://doi.org/10.1234/direct.publish.example",
+            "--title",
+            "Direct Publish Example Paper",
+            "--note",
+            "Demonstrates owner-only direct URL publishing.",
+            "--tags",
+            "enzyme design, benchmark",
+            "--reviewer",
+            "maintainer",
+            "--accepted-at",
+            "2026-04-26T00:00:00+00:00",
+            "--dry-run",
+        )
+
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("id: doi-10-1234-direct-publish-example", result.stdout)
+        self.assertIn("title: Direct Publish Example Paper", result.stdout)
+        self.assertIn("curator: maintainer", result.stdout)
+        self.assertIn("featured: false", result.stdout)
+        self.assertIn("https://doi.org/10.1234/direct.publish.example", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
