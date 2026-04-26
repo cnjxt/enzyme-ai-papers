@@ -70,3 +70,6 @@ mkdocs serve -a 127.0.0.1:8010
 Use [DEPLOYMENT.md](DEPLOYMENT.md) when publishing a new GitHub-hosted instance.
 It covers repository setup, public URLs, labels, Actions permissions, GitHub
 Pages, branch protection, and the end-to-end acceptance test.
+
+Use [DEPLOYMENT_RUNBOOK.md](DEPLOYMENT_RUNBOOK.md) for a shorter step-by-step
+execution checklist, including post-deployment paper submission and PR methods.
