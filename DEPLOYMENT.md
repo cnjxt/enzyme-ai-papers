@@ -9,7 +9,7 @@ The project has two public surfaces:
 
 - GitHub repository: stores issues, curation pull requests, YAML paper records,
   and GitHub Actions.
-- GitHub Pages website: serves the generated MkDocs site from `docs/`.
+- GitHub Pages website: serves the MkDocs build artifact generated from `docs/`.
 
 The normal flow after deployment is:
 
@@ -122,13 +122,13 @@ The simplest setup is:
 
 ```text
 Settings -> Pages
-Build and deployment: Deploy from a branch
-Branch: main
-Folder: /docs
+Build and deployment: GitHub Actions
 ```
 
-Purpose: `scripts/build_docs.py` generates the website under `docs/`, so GitHub
-Pages can publish it directly after PRs are merged.
+Purpose: `scripts/build_docs.py` generates the MkDocs source files under
+`docs/`, then `.github/workflows/deploy-pages.yml` runs `mkdocs build --strict`
+and publishes the built `site/` artifact. Do not deploy `main` + `/docs`
+directly, because GitHub Pages will render it with Jekyll instead of MkDocs.
 
 ## 7. Protect the Main Branch
 
@@ -193,6 +193,18 @@ File:
 
 Runs MkDocs in strict mode to catch broken pages, links, and build errors.
 
+### Pages Deploy
+
+File:
+
+```text
+.github/workflows/deploy-pages.yml
+```
+
+Runs on pushes to `main` and manual dispatch. It regenerates docs, builds the
+MkDocs site into `site/`, uploads the Pages artifact, and deploys it to GitHub
+Pages.
+
 ## 9. End-to-End Acceptance Test
 
 After deployment, test the real workflow:
@@ -220,7 +232,7 @@ Before announcing the project publicly:
 - Confirm all curation labels exist.
 - Confirm GitHub Actions can open pull requests.
 - Confirm branch protection is enabled.
-- Confirm GitHub Pages serves the `docs/` site.
+- Confirm GitHub Pages build and deployment source is GitHub Actions.
 - Confirm one real paper suggestion can complete the full issue-to-PR flow.
 
 ## Operational Notes
